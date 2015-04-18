@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Genetic Something</title>
+  <script type="text/javascript" src="genetic-0.1.14.js"></script>
+  <script type="text/javascript" src="MIDI.js"></script>
+  <script type="text/javascript" src="basic_dodo.js"></script>
+</head>
+<body>
+
+<button id="do_button" style="width:2em; height:2em; font-size:10em" 
+  onclick="
+
+    console.log(DODO.n_completely_random('CcDdEFfGgAaB',12));
+
+    var genetic = Genetic.create();
+
+    DODO.populate(
+      genetic, 
+      {
+        select1:Genetic.Select1.Fittest, 
+        select2:Genetic.Select2.RandomLinearRank, 
+        optimize:Genetic.Optimize.Maximize
+      });
+
+    genetic.evolve();">
+  GO
+</button>
+
+</body>
+</html>
