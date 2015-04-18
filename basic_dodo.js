@@ -71,10 +71,11 @@ if (typeof DODO === 'undefined') DODO = {};
     input.generation = function(pop, generation, stats) {}
     input.notification = function(pop, generation, stats, isFinished) {
       if(isFinished){
-        console.log('DONE, best overall: '+JSON.stringify(pop[0]))
-      }
-        console.log('best '+JSON.stringify(pop[0]))
+        console.log('Best after '+(generation+1)+' generations: '+JSON.stringify(pop[0]))
+      }else{
+        console.log('best in '+generation+'_th generation is'+JSON.stringify(pop[0]))
         // console.log('worst '+JSON.stringify(pop[pop.length-1]))
+      }
     }
 
     return input
