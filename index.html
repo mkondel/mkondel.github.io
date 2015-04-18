@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- select2:Genetic.Select2.RandomLinearRank,  -->
-<button id="do_button" style="width:2em; height:2em; font-size:10em" 
+<button id="do_button" style="font-size:12em" 
   onclick="
 
     var genetic = Genetic.create();
@@ -18,11 +18,12 @@
       {
         select1:Genetic.Select1.Random, 
         select2:Genetic.Select2.FittestRandom, 
-        optimize:Genetic.Optimize.Maximize
+        optimize:Genetic.Optimize.Maximize,
+        result_callback:function(data){console.log(data.best.join('')+' >> '+data.worst.join(''))}
       });
 
-    genetic.evolve({'iterations': Math.pow(2,9), 'size': Math.pow(2,10), 'crossover': Math.pow(2,-12), 'mutation': Math.pow(2,-12), 'skip': Math.pow(2,9)})">
-  GO
+    genetic.evolve({'iterations': Math.pow(2,9), 'size': Math.pow(2,9), 'crossover': Math.pow(2,-12), 'mutation': Math.pow(2,-12), 'skip': Math.pow(2,12)})">
+  &#119070;
 </button>
 
 </body>

@@ -1,14 +1,12 @@
 // [ 'C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 if (typeof DODO === 'undefined') DODO = {};
-(function(root) { 'use strict';
-
-  console.log('DODO loading')
-  
+(function(root) { 'use strict';  
   root.populate = function(input, options) {
     input.select1 = options.select1
     input.select2 = options.select2
     input.optimize = options.optimize
-    // input.notes_in_order = ['C','c','D','d','E','F','f','G','g','A','a','B']
+    input.result_callback = options.result_callback
+    input.notes_in_order = ['C','c','D','d','E','F','f','G','g','A','a','B']
 
     // return random integer with 0 ≤ j ≤ n
     input.j = function(n){return Math.floor(Math.random() * (n+1));}
@@ -38,8 +36,6 @@ if (typeof DODO === 'undefined') DODO = {};
       return a
     }
 
-    // input.notes_in_order = input.unique_set_one_of_each(['C','c','D','d','E','F','f','G','g','A','a','B'])
-    input.notes_in_order = ['C','c','D','d','E','F','f','G','g','A','a','B']
 
     input.seed = function() {
       // console.log('seed: '+this.notes_in_order)
@@ -91,7 +87,7 @@ if (typeof DODO === 'undefined') DODO = {};
       }
 
       for(var i=0; i<diff.length; i++){
-        sum += Math.pow(1.001,diff[i]-i)
+        sum += Math.pow(1.1,diff[i]-i)
       }
       return (sum-entity.length)*100000
     }
@@ -101,9 +97,10 @@ if (typeof DODO === 'undefined') DODO = {};
 
     input.notification = function(pop, generation, stats, isFinished) {
       if(isFinished){
-        console.log('DODOKEY: '+input.notes_in_order)
-        console.log('Best after '+(generation+1)+' generations: '+JSON.stringify(pop[0]))
-        console.log('Worst after '+(generation+1)+' generations: '+JSON.stringify(pop[pop.length-1]))
+        // console.log('DODOKEY: '+input.notes_in_order)
+        // console.log('Best after '+(generation+1)+' generations: '+JSON.stringify(pop[0]))
+        // console.log('Worst after '+(generation+1)+' generations: '+JSON.stringify(pop[pop.length-1]))
+        this.result_callback({'best':pop[0].entity, 'worst':pop[pop.length-1].entity})
       }else{
         // console.log('best in '+generation+'_th generation is '+JSON.stringify(pop[0]))
         // console.log('worst in '+generation+'_th generation is '+JSON.stringify(pop[pop.length-1]))
@@ -112,5 +109,5 @@ if (typeof DODO === 'undefined') DODO = {};
 
     return input
   }
-
+  console.log('DODO loaded')
 })(DODO)
