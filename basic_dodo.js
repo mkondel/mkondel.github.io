@@ -4,27 +4,16 @@ if (typeof DODO === 'undefined') DODO = {};
 
   console.log('DODO loading')
   
-  // return random integer with 0 ≤ j ≤ n
-  var j = function(n){return Math.floor(Math.random() * (n+1));}
-
-  // To shuffle an array a of n elements (indices 0..n-1):
-  root.n_completely_random = function(alphabet, n){
-    var a = []
-    for(var i=n; i>0; i--){
-      a.push(alphabet[j(alphabet.length-1)])
-    }
-    return a
-  }
 
   // Sattolo's To shuffle an array a of n elements (indices 0..n-1):
   root.unique_set_one_of_each = function(a){
-    n = a.length
+    var n = a.length
     //for i from n − 1 downto 1 do
     for(var i=n-1; i>1; i--){
       //j ← random integer with 0 ≤ j ≤ i
-      J = j(i)
+      var J = j(i)
       //exchange a[j] and a[i]
-      temp = a[i]
+      var temp = a[i]
       a[i] = a[J]
       a[J] = temp
     }
@@ -37,10 +26,25 @@ if (typeof DODO === 'undefined') DODO = {};
     input.select2 = options.select2
     input.optimize = options.optimize
 
+    // console.log(seeder('CcDdEFfGgAaB',12))
+
+    // return random integer with 0 ≤ j ≤ n
+    input.j = function(n){return Math.floor(Math.random() * (n+1));}
+
+    // To shuffle an array a of n elements (indices 0..n-1):
+    input.n_completely_random = function(alphabet, n){
+      var a = []
+      for(var i=n; i>0; i--){
+        a.push(alphabet[this.j(alphabet.length-1)])
+      }
+      return a
+    }
+
     input.seed = function() {
-      console.log('seed')
-      var r = { a:Math.random(), b:Math.random(), c:Math.random() }
-      return r
+      // console.log('seed: '+JSON.stringify(this,null,1))
+      var entity = this.n_completely_random('CcDdEFfGgAaB',12)
+      console.log('seed: '+JSON.stringify(entity))
+      return entity
     }
 
     input.mutate = function(entity) {
@@ -54,7 +58,7 @@ if (typeof DODO === 'undefined') DODO = {};
     }
 
     input.fitness = function(entity) {
-      console.log('fitness')
+      console.log('fitness: '+JSON.stringify(entity))
       return Float;
     }
 
