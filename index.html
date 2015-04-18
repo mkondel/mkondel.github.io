@@ -7,7 +7,7 @@
   <script type="text/javascript" src="basic_dodo.js"></script>
 </head>
 <body>
-
+<!-- select2:Genetic.Select2.RandomLinearRank,  -->
 <button id="do_button" style="width:2em; height:2em; font-size:10em" 
   onclick="
 
@@ -16,12 +16,12 @@
     DODO.populate(
       genetic, 
       {
-        select1:Genetic.Select1.Fittest, 
-        select2:Genetic.Select2.RandomLinearRank, 
+        select1:Genetic.Select1.Random, 
+        select2:Genetic.Select2.Random, 
         optimize:Genetic.Optimize.Maximize
       });
 
-    genetic.evolve({'iterations': 1000, 'size': 500, 'crossover': 0.5, 'mutation': 0.6, 'skip': 200})">
+    genetic.evolve({'iterations': 1000, 'size': 10000, 'crossover': 0.5, 'mutation': 0.5, 'skip': 100})">
   GO
 </button>
 

@@ -38,21 +38,42 @@ if (typeof DODO === 'undefined') DODO = {};
     }
 
     input.seed = function() {
-      // console.log('seed: '+JSON.stringify(this,null,1))
-      // var entity = this.n_completely_random('CcDdEFfGgAaB',12)
       var entity = this.unique_set_one_of_each(this.notes_in_order)
-      // console.log('seed: '+JSON.stringify(entity))
+      // console.log('seed '+ entity)
       return entity
     }
 
     input.mutate = function(entity) {
-      // console.log('mutate')
-      return entity
+      var mutant = entity
+      var a=Math.floor(Math.random() * mutant.length)
+      var b=Math.floor(Math.random() * this.notes_in_order.length)
+      mutant[a] = this.notes_in_order[b]
+      return mutant
     }
 
-    input.crossover = function(mother, father){
-      // console.log('crossover')
-      return [mother,father]
+    // one-point crossover
+    input.crossover0 = function(mother, father){
+      var son=mother, daughter=father, x=Math.floor(Math.random() * mother.length)
+      son = [].concat(mother.slice(0,x),father.slice(x))
+      daughter = son.reverse()
+      return [son, daughter]
+    }
+
+    // two-point crossover
+    input.crossover = function(mother, father) {
+      var len = mother.length;
+      var ca = Math.floor(Math.random()*len);
+      var cb = Math.floor(Math.random()*len);   
+      if (ca > cb) {
+        var tmp = cb;
+        cb = ca;
+        ca = tmp;
+      }
+        
+      var son = [].concat(father.slice(0,ca), mother.slice(ca, cb-ca), father.slice(cb))
+      var daughter = [].concat(mother.slice(0,ca), father.slice(ca, cb-ca), mother.slice(cb))
+      
+      return [son, daughter];
     }
 
     input.fitness = function(entity) {
@@ -60,7 +81,6 @@ if (typeof DODO === 'undefined') DODO = {};
       for(var i=0; i<entity.length; i++){
         diff.push(this.notes_in_order.indexOf(entity[i])-i)
       }
-      // console.log('fitness: '+JSON.stringify(entity)+' = '+diff)
 
       for(var i=0; i<diff.length; i++){
         sum += Math.abs(diff[i])*Math.pow(2,i)
@@ -69,12 +89,13 @@ if (typeof DODO === 'undefined') DODO = {};
     }
 
     input.generation = function(pop, generation, stats) {}
+
     input.notification = function(pop, generation, stats, isFinished) {
       if(isFinished){
         console.log('Best after '+(generation+1)+' generations: '+JSON.stringify(pop[0]))
+        // console.log('Worst after '+(generation+1)+' generations: '+JSON.stringify(pop[pop.length-1]))
       }else{
         console.log('best in '+generation+'_th generation is'+JSON.stringify(pop[0]))
-        // console.log('worst '+JSON.stringify(pop[pop.length-1]))
       }
     }
 
