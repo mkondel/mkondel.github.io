@@ -17,11 +17,11 @@
       genetic, 
       {
         select1:Genetic.Select1.Random, 
-        select2:Genetic.Select2.Random, 
+        select2:Genetic.Select2.FittestRandom, 
         optimize:Genetic.Optimize.Maximize
       });
 
-    genetic.evolve({'iterations': 1000, 'size': 10000, 'crossover': 0.5, 'mutation': 0.5, 'skip': 100})">
+    genetic.evolve({'iterations': Math.pow(2,9), 'size': Math.pow(2,10), 'crossover': Math.pow(2,-12), 'mutation': Math.pow(2,-12), 'skip': Math.pow(2,9)})">
   GO
 </button>
 
