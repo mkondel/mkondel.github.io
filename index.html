@@ -2,29 +2,35 @@
 <html>
 <head>
   <title>Genetic Something</title>
-  <script type="text/javascript" src="genetic-0.1.14.js"></script>
-  <script type="text/javascript" src="MIDI.js"></script>
-  <script type="text/javascript" src="basic_dodo.js"></script>
+  <script type="text/javascript" src="./js/MIDI.js"></script>
+  <script type="text/javascript" src="./js/genetic-0.1.14.js"></script>
+  <script type="text/javascript" src="./js/play.js"></script>
+  <script type="text/javascript" src="./js/basic_dodo.js"></script>
+  <script type="text/javascript">
+    var print_me = function(m){logs.value=m}
+    var do_once = function(){
+      var genetic = Genetic.create()
+
+      DODO.populate(
+        genetic, 
+        {
+          select1:Genetic.Select1.Random, 
+          select2:Genetic.Select2.FittestRandom, 
+          optimize:Genetic.Optimize.Maximize,
+          result_callback:PLAY.play_midi
+        })
+
+      genetic.evolve({'iterations': Math.pow(2,9), 'size': Math.pow(2,9), 'crossover': Math.pow(2,-12), 'mutation': Math.pow(2,-12), 'skip': Math.pow(2,12)})
+      // setTimeout( do_once, 1000 )
+    }
+  </script>
 </head>
 <body>
-<!-- select2:Genetic.Select2.RandomLinearRank,  -->
 <button id="do_button" style="font-size:12em" 
-  onclick="
-
-    var genetic = Genetic.create();
-
-    DODO.populate(
-      genetic, 
-      {
-        select1:Genetic.Select1.Random, 
-        select2:Genetic.Select2.FittestRandom, 
-        optimize:Genetic.Optimize.Maximize,
-        result_callback:function(data){console.log(data.best.join('')+' >> '+data.worst.join(''))}
-      });
-
-    genetic.evolve({'iterations': Math.pow(2,9), 'size': Math.pow(2,9), 'crossover': Math.pow(2,-12), 'mutation': Math.pow(2,-12), 'skip': Math.pow(2,12)})">
+  onclick="do_once()">
   &#119070;
 </button>
+<output id="logs"></output>
 
 </body>
 </html>
