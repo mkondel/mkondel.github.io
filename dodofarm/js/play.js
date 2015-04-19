@@ -1,7 +1,7 @@
 if (typeof PLAY === 'undefined') PLAY = {};
 (function(PLAY) { 'use strict';
   var picked_instrument = "acoustic_grand_piano"
-  var picked_soundfont = "./soundfont/dodo/"
+  var picked_soundfont = "./soundfont/"
   var OCTAVE = 3
   PLAY.song = null
 
