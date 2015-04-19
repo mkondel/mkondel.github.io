@@ -1,14 +1,15 @@
 // [ 'C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 // input.notes_in_order = ['C','c','D','d','E','F','f','G','g','A','a','B']
 if (typeof DODO === 'undefined') DODO = {};
-(function(root) { 'use strict';
+(function(DODO) { 'use strict';
     DODO.populate = function(input, options) {
-      print_me('making new dodos')
+      DOER.print_me('populate_dodos','logs')
       input.select1 = options.select1
       input.select2 = options.select2
       input.optimize = options.optimize
       input.result_callback = options.result_callback
-      input.notes_in_order = typeof options.dodo != 'undefined' ? options.dodo:['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
+      input.notes_in_order = typeof options.dodo != 'undefined' ? 
+            options.dodo:['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
 
       // return random integer with 0 ≤ j ≤ n
       input.j = function(n){return Math.floor(Math.random() * (n+1));}
@@ -40,7 +41,7 @@ if (typeof DODO === 'undefined') DODO = {};
 
 
       input.seed = function() {
-        // print_me('seed: '+this.notes_in_order)
+        // DOER.print_me('seed: '+this.notes_in_order, 'logs')
         var entity = this.unique_set_one_of_each(this.notes_in_order)
         return entity
       }
@@ -54,7 +55,7 @@ if (typeof DODO === 'undefined') DODO = {};
       }
 
       input.crossover = input.one_point_crossover = function(mother, father){
-        var x=Math.floor(Math.random() * mother.length),
+        var x=Math.floor(Math.random() * (mother.length+father.length)/2),
             son=[].concat(mother.slice(0,x),father.slice(x)),
             daughter=son.slice().reverse()
 
@@ -65,16 +66,13 @@ if (typeof DODO === 'undefined') DODO = {};
         var len = mother.length;
         var start = Math.floor(Math.random()*len);
         var end = Math.floor(Math.random()*len); 
-        // print_me(start, end)  
         if (start > end) {
           var tmp = end;
           end = start;
           start = tmp;
         }
-          
         var son = [].concat(father.slice(0,start), mother.slice(start, end), father.slice(end))
         var daughter = [].concat(mother.slice(0,start), father.slice(start, end), mother.slice(end))
-        
         return [son, daughter];
       }
 
@@ -90,7 +88,8 @@ if (typeof DODO === 'undefined') DODO = {};
         return (sum-entity.length)*100000
       }
 
-      input.generation = function(pop, generation, stats) {
+      input.generation = function(pop, gen, stats) {
+        console.log('gen '+gen)
       }
 
       input.notification = function(pop, generation, stats, isFinished) {
@@ -98,7 +97,6 @@ if (typeof DODO === 'undefined') DODO = {};
           this.result_callback({'best':pop[0].entity, 'worst':pop[pop.length-1].entity})
         }else{}
       }
-      // print_me(options)
       return input
     }
 })(DODO)

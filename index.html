@@ -1,36 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Genetic Something</title>
-  <script type="text/javascript" src="./js/MIDI.js"></script>
-  <script type="text/javascript" src="./js/genetic.js"></script>
+  <link   rel="stylesheet"       href="./css/main.css" />
+  <script type="text/javascript" src="./js/libs/MIDI.js"></script>
+  <script type="text/javascript" src="./js/libs/genetic.js"></script>
   <script type="text/javascript" src="./js/play.js"></script>
   <script type="text/javascript" src="./js/dodo.js"></script>
-  <script type="text/javascript">
-    var print_me = function(m){logs.value=m}
-    var do_once = function(){
-      var genetic = Genetic.create()
+  <script type="text/javascript" src="./js/doer.js"></script>
 
-      DODO.populate(
-        genetic, 
-        {
-          select1:Genetic.Select1.Random, 
-          select2:Genetic.Select2.FittestRandom, 
-          optimize:Genetic.Optimize.Maximize,
-          result_callback:PLAY.play_midi
-        })
-
-      genetic.evolve({'iterations': Math.pow(2,9), 'size': Math.pow(2,9), 'crossover': Math.pow(2,-12), 'mutation': Math.pow(2,-12), 'skip': Math.pow(2,12)})
-      // setTimeout( do_once, 1000 )
-    }
-  </script>
+  <title>Genetic Something</title>
 </head>
 <body>
-<button id="do_button" style="font-size:12em" 
-  onclick="do_once()">
-  &#119070;
-</button>
-<output id="logs"></output>
+<div><h3>Dodo Farm</h3></div>
+<div>
+  <div id="new_dodo" class="c f b " onclick="DOER.do_dodos()" title="evolve">&#127926;</div>
+  <div id="logs" class="c f"><------------{click_start}</div>
+</div>
+<div>
+  <div id="replay" class="c f b " onclick="PLAY.play_song()" title="replay">&#9834;</div>
+  <div id="dodos" class="c f notes"></div>
+</div>
 
 </body>
 </html>

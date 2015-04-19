@@ -1,0 +1,33 @@
+div {
+  display: -webkit-flex;
+  padding: 10px;
+  border: 1px solid;
+}
+
+div:hover {outline: 1px solid blue;}
+
+.f {
+  float: left;
+  display: block;
+  width: 100%;
+  font-size: 4em;
+}
+
+.c {
+  display: table-cell;
+  vertical-align: middle;
+  height: inherit;
+  text-align: center;
+}
+
+.b {
+  width: 2em;
+}
+
+.notes {
+  font-size: 1.8em;
+}
+
+.font3 {
+  font-size: 3em;
+}
