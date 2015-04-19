@@ -1,2 +1,2 @@
-# dodo
-Genetic programs
+# dodofarm
+Genetic dodecaphonic composer
