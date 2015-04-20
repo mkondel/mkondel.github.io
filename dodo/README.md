@@ -18,6 +18,4 @@ Genetic dodecaphonic composer
 ### how to grade musical phrases
 [![Bifurcated Cookie](dodofarm/img/bifurcated-cookie.jpg)](http://en.wikipedia.org/wiki/File:Diletsky_circle.jpg)
 
-[![Pitch star](http://upload.wikimedia.org/wikipedia/commons/6/6f/Pitch_class_space_star.svg)](http://upload.wikimedia.org/wikipedia/commons/6/6f/Pitch_class_space_star.svg)
-
-[![Circle of fifths](http://upload.wikimedia.org/wikipedia/commons/3/33/Circle_of_fifths_deluxe_4.svg)](http://upload.wikimedia.org/wikipedia/commons/3/33/Circle_of_fifths_deluxe_4.svg)
+[![Pitch star](http://upload.wikimedia.org/wikipedia/commons/6/6f/Pitch_class_space_star.svg)](http://upload.wikimedia.org/wikipedia/commons/3/33/Circle_of_fifths_deluxe_4.svg)
