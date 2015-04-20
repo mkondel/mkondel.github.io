@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link   rel="stylesheet"       href="./css/main.css" />
+  <link   rel="stylesheet"       href="css/main.css" />
   <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4fwAA+b8AAA+gAAD8PwAA+18AABNoAAD07wAA9h8AABjwAAD8/wAA/n8AAAUgAAD9vwAA/T8AAARgAAD+/wAA" rel="icon" type="image/x-icon" />
   <title>Genetic Something</title>
 </head>
@@ -18,12 +18,20 @@
 
 </body>
 <!-- polyfill -->
-<script type="text/javascript" src="js/libs/shim/Base64.js"></script>
-<script type="text/javascript" src="js/libs/shim/Base64binary.js"></script>
-<script type="text/javascript" src="js/libs/shim/web-audio-api-shim.js"></script>
-<script type="text/javascript" src="js/libs/MIDI.js"></script>
+<script type="text/javascript" src="js/libs/midi.new/Base64.js"></script>
+<script type="text/javascript" src="js/libs/midi.new/Base64binary.js"></script>
+<!-- <script type="text/javascript" src="js/libs/midi.new/web-audio-api-shim.js"></script> -->
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script> -->
+<!-- <script type="text/javascript" src="js/libs/js-webshim/minified/polyfiller.js"></script> -->
+<!--<script>webshims.polyfill();</script>-->
+<!-- <script type="text/javascript" src="js/libs/audio-js.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://code.createjs.com/soundjs-0.6.0.min.js"></script> -->
+<script type="text/javascript" src="js/libs/midi/MIDI.js"></script>
 <script type="text/javascript" src="js/libs/genetic.js"></script>
 <script type="text/javascript" src="js/play.js"></script>
 <script type="text/javascript" src="js/dodo.js"></script>
 <script type="text/javascript" src="js/doer.js"></script>
+
+<script type="text/javascript">webshims.polyfill();</script>
+
 </html>
