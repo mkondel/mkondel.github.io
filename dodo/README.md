@@ -2,7 +2,7 @@
 Genetic dodecaphonic composer
 
 ### representing notes
- * biforcated twelwe space
+ * bifurcated twelwe space
  * archimedes spiral with 12 steps
 
 ### how notes relate to sound
@@ -16,4 +16,8 @@ Genetic dodecaphonic composer
 - `freq = [{2^(1/12)}^(note-49)] * 440Hz`
 
 ### how to grade musical phrases
-[a relative link](dodofarm/img/biforcated-cookie.jpg)
+[![Bifurcated Cookie](dodofarm/img/bifurcated-cookie.jpg)](http://en.wikipedia.org/wiki/File:Diletsky_circle.jpg)
+
+[![Pitch star](http://en.wikipedia.org/wiki/Circle_of_fifths#/media/File:Pitch_class_space_star.svg)](http://en.wikipedia.org/wiki/Circle_of_fifths#/media/File:Pitch_class_space_star.svg)
+
+[![Circle of fifths](http://en.wikipedia.org/wiki/File:Circle_of_fifths_deluxe_4.svg)](http://en.wikipedia.org/wiki/File:Circle_of_fifths_deluxe_4.svg)
