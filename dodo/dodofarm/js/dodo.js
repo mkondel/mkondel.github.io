@@ -89,7 +89,7 @@ if (typeof DODO === 'undefined') DODO = {};
       }
 
       input.generation = function(pop, gen, stats) {
-        console.log('gen '+gen)
+        // console.log('gen '+gen)
       }
 
       input.notification = function(pop, generation, stats, isFinished) {

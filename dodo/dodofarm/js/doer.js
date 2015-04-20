@@ -39,8 +39,7 @@ if (typeof DOER === 'undefined') DOER = {};
       })
 
     genetic.evolve({
-      'iterations': 10, 
-      // 'iterations': Math.pow(2,9), 
+      'iterations': Math.pow(2,9), 
       'size': Math.pow(2,9), 
       'crossover': Math.pow(2,-12), 
       'mutation': Math.pow(2,-12),
