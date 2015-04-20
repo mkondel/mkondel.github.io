@@ -2,10 +2,12 @@
 Genetic dodecaphonic composer
 
 ### representing notes
+======================
  * biforcated twelwe space
  * archimedes spiral with 12 steps
 
-### how notes relate to sound 
+### how notes relate to sound
+=============================
 #### [math of note frequency](http://www.intmath.com/trigonometric-graphs/music.php).
 - `note(0) = A4`
 - `f=(440)*(2)^(note/12)`
