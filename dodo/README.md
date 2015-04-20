@@ -14,3 +14,6 @@ Genetic dodecaphonic composer
 - `note(49) = 440Hz (A4)`
 - `note = 12 * log2(freq/440Hz) + 49`
 - `freq = [{2^(1/12)}^(note-49)] * 440Hz`
+
+### how to grade musical phrases
+[a relative link](dodofarm/img/biforcated-cookie.jpg)
