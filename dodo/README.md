@@ -19,3 +19,6 @@ Genetic dodecaphonic composer
 Bifurcated Cookie|Pitch star
 :-:|:-:
 [![Bifurcated Cookie](dodofarm/img/bifurcated-cookie.jpg)](http://en.wikipedia.org/wiki/File:Diletsky_circle.jpg)  |  [![Pitch star](http://upload.wikimedia.org/wikipedia/commons/6/6f/Pitch_class_space_star.svg)](http://upload.wikimedia.org/wikipedia/commons/3/33/Circle_of_fifths_deluxe_4.svg)
+
+### GATTACA
+#### how to encode/decode ACGT as 12 notes
