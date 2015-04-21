@@ -2,7 +2,7 @@ if (typeof PLAY === 'undefined') PLAY = {};
 (function(PLAY) { 'use strict';
   var picked_instrument = "acoustic_grand_piano"
   var picked_soundfont = "./soundfont/"
-  var OCTAVE = 3
+  var OCTAVE = 7
   PLAY.song = null
 
   PLAY.play_midi = function (data) { 
@@ -32,6 +32,13 @@ if (typeof PLAY === 'undefined') PLAY = {};
     }
 
     var tape = PLAY.song.slice()
+    console.log('this here')
+    self.curr_notes = []
+    self.curr_keys = []
+    for(var i=0; i<tape.length; i++){
+      self.curr_notes.push(tape[i]+OCTAVE)
+      self.curr_keys.push(MIDI.keyToNote[tape[i]+OCTAVE])
+    }
     play_this(tape)
   }
 })(PLAY)
