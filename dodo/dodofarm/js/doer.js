@@ -7,6 +7,7 @@ if (typeof DOER === 'undefined') DOER = {};
   }
 
   DOER.print_me = function(m,id){ id?document.getElementById(id).innerHTML=m:console.log(m) }
+  DOER.ascii_print = function(m,id){ id?document.getElementById(id).value=m:console.log(m) }
   DOER.song_over = function(cb){ DOER.stop_this=false; cb('song_over','logs') }
   DOER.stop_this = false
 

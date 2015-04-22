@@ -3,12 +3,25 @@ if (typeof PLAY === 'undefined') PLAY = {
 ,   picked_soundfont: "./soundfont/"
 ,   song: null
 
+, play_ascii: function (data) { 
+    PLAY.song = data
+    DOER.stop_this = true
+    var actual_notes = PLAY.ascii_phrase_notes(data)
+    DOER.print_me(actual_notes, 'dodos')
+    MIDI.loadPlugin({
+      soundfontUrl: PLAY.picked_soundfont,
+      instrument: PLAY.picked_instrument,
+      onsuccess: PLAY.play_song
+    })
+  }
+
 , play_midi: function (data) { 
     DOER.print_me(data.best.join('')+' >> '+data.worst.join(''))
     PLAY.song = data.best
     DOER.stop_this = true
     var actual_notes = PLAY.ascii_phrase_notes(data.best)
     DOER.print_me(actual_notes, 'dodos')
+    DOER.ascii_print(PLAY.song.join(''), 'seed_string')
     MIDI.loadPlugin({
       soundfontUrl: PLAY.picked_soundfont,
       instrument: PLAY.picked_instrument,
