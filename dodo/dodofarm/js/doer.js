@@ -35,7 +35,8 @@ if (typeof DOER === 'undefined') DOER = {};
         select1:Genetic.Select1.Random, 
         select2:Genetic.Select2.FittestRandom, 
         optimize:Genetic.Optimize.Minimize,
-        result_callback:PLAY.play_midi
+        result_callback:PLAY.play_midi,
+        genepool:PLAY.midi_genepool(21,109)
       })
 
     genetic.evolve({

@@ -1,5 +1,5 @@
 // [ 'C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
-// input.notes_in_order = ['C','c','D','d','E','F','f','G','g','A','a','B']
+// input.genepool = ['C','c','D','d','E','F','f','G','g','A','a','B']
 if (typeof DODO === 'undefined') DODO = {};
 (function(DODO) { 'use strict';
     DODO.populate = function(input, options) {
@@ -8,8 +8,8 @@ if (typeof DODO === 'undefined') DODO = {};
       input.select2 = options.select2
       input.optimize = options.optimize
       input.result_callback = options.result_callback
-      input.notes_in_order = typeof options.dodo != 'undefined' ? 
-            options.dodo:['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
+      input.genepool = typeof options.genepool != 'undefined' ? 
+                              options.genepool : ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
 
       // return random integer with 0 ≤ j ≤ n
       input.j = function(n){return Math.floor(Math.random() * (n+1));}
@@ -31,33 +31,34 @@ if (typeof DODO === 'undefined') DODO = {};
       }
 
       // To shuffle an array a of n elements (indices 0..n-1):
-      input.n_completely_random = function(alphabet, n){
+      input.n_completely_random = function(al, n){
         var a = []
         for(var i=n; i>0; i--){
-          a.push(alphabet[this.j(alphabet.length-1)])
+          a.push(al[this.j(al.length-1)])
         }
         return a
       }
 
 
       input.seed = function() {
-        // DOER.print_me('seed: '+this.notes_in_order, 'logs')
-        var entity = this.unique_set_one_of_each(this.notes_in_order)
+        // DOER.print_me('seed: '+this.genepool, 'logs')
+        // var entity = this.unique_set_one_of_each(this.genepool)
+        var entity = this.n_completely_random(this.genepool, 12)
         return entity
       }
 
       input.mutate = function(entity) {
         var mutant = entity.slice()
         var a=Math.floor(Math.random() * mutant.length)
-        var b=Math.floor(Math.random() * this.notes_in_order.length)
-        mutant[a] = this.notes_in_order[b]
+        var b=Math.floor(Math.random() * this.genepool.length)
+        mutant[a] = this.genepool[b]
         return mutant
       }
 
       input.crossover = input.one_point_crossover = function(mother, father){
         var x=Math.floor(Math.random() * (mother.length+father.length)/2),
             son=[].concat(mother.slice(0,x),father.slice(x)),
-            daughter=son.slice().reverse()
+            daughter=[].concat(father.slice(0,x),mother.slice(x))
 
         return [son, daughter]
       }
@@ -67,9 +68,7 @@ if (typeof DODO === 'undefined') DODO = {};
         var start = Math.floor(Math.random()*len);
         var end = Math.floor(Math.random()*len); 
         if (start > end) {
-          var tmp = end;
-          end = start;
-          start = tmp;
+          start = start^end^(end^=(start^end))
         }
         var son = [].concat(father.slice(0,start), mother.slice(start, end), father.slice(end))
         var daughter = [].concat(mother.slice(0,start), father.slice(start, end), mother.slice(end))
@@ -79,7 +78,7 @@ if (typeof DODO === 'undefined') DODO = {};
       input.fitness = function(entity) {
         var diff = [], sum=0
         for(var i=0; i<entity.length; i++){
-          diff.push(this.notes_in_order.indexOf(entity[i]))
+          diff.push(this.genepool.indexOf(entity[i]))
         }
 
         for(var i=0; i<diff.length; i++){
