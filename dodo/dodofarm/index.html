@@ -4,6 +4,7 @@
     <link   rel="stylesheet"       href="css/main.css" />
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4fwAA+b8AAA+gAAD8PwAA+18AABNoAAD07wAA9h8AABjwAAD8/wAA/n8AAAUgAAD9vwAA/T8AAARgAAD+/wAA" rel="icon" type="image/x-icon" />
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+
     <script src="js/libs/shims/Base64.js"></script>
     <script src="js/libs/shims/Base64binary.js"></script>
     <script src="js/libs/MIDI.js"></script>
@@ -16,18 +17,17 @@
   <body>
     <div><h3>Dodo Farm Bar</h3></div>
     <div>
-      <div id="new_dodo" class="c f b " onclick="DOER.do_dodos()" title="evolve">&#127926;</div>
-      <div id="logs" class="c f"><------------{click_start}</div>
+      <div id="new_dodo" title="evolve">&#127926;</div>
+      <div id="logs"><------------{click_start}</div>
     </div>
     <div>
-      <div id="replay" class="c f b " onclick="PLAY.play_song()" title="replay">play</div>
-      <div id="dodos" class="c f notes"></div>
+      <div id="replay" onclick="PLAY.play_song()" title="replay">play</div>
+      <div id="dodos"></div>
     </div>
     <div>
-      <div id="seed" class="c f b " onclick="PLAY.play_ascii(seed_string.value.split(''))" title="seed">seed</div>
-      <input id="seed_string" class="c f notes" value="hello"/>
+      <div id="seed" onclick="PLAY.play_ascii(seed_string.value.split(''))" title="seed">seed</div>
+      <input id="seed_string" value="hello"/>
     </div>
   </body>
-
-
+  <script src="js/j.js"></script>
 </html>

@@ -1,33 +1,33 @@
 //all the misc functinos that make this page work
-if (typeof DOER === 'undefined') DOER = {};
-(function(DOER) { 'use strict';
-  DOER.do_dodos = function(){
-    random_animal(100,100)
-    do_once()
+if (typeof DOER === 'undefined') DOER = {
+  do_dodos: function(){
+    this.random_animal(30,200,DOER.print_me)
+    this.do_once()
   }
 
-  DOER.print_me = function(m,id){ id?document.getElementById(id).innerHTML=m:console.log(m) }
-  DOER.ascii_print = function(m,id){ id?document.getElementById(id).value=m:console.log(m) }
-  DOER.song_over = function(cb){ DOER.stop_this=false; cb('song_over','logs') }
-  DOER.stop_this = false
+, print_me: function(m,id){ id?document.getElementById(id).innerHTML=m:console.log(m) }
+, ascii_print: function(m,id){ id?document.getElementById(id).value=m:console.log(m) }
+, song_over: function(cb){ DOER.stop_this = false; cb('song_over','logs') }
+, stop_this: false
 
-  var random_animal = function(N, T, cb){
-    var wrapper = function(c){ return '&#'+c+';' }
-    var j = function(n){return Math.floor(Math.random() * (n+1))}
-    var start_char = 128000
-    var delta = 61
-
-    var one_char = function(n){
-      if(DOER.stop_this){n=0}
-      if(n>0){
-        DOER.print_me(wrapper(start_char+j(delta)), 'new_dodo')
-        setTimeout( function(){one_char(n-1)}, T )
+, random_animal: function(N, T, cb){
+    wrapper = function(c){ return '&#'+c+';' }
+    j = function(n){return Math.floor(Math.random() * (n+1))}
+    start_char = 128000
+    delta = 61
+    one_char = function(n){
+        if(DOER.stop_this){
+          n=0
+        }
+        if(n>0){
+          cb(wrapper(start_char+j(delta)), 'new_dodo')
+          setTimeout( function(){one_char(n-1)}, T )
+        }
       }
-    }
     one_char(N)
   }
 
-  var do_once = function(){
+,  do_once: function(){
     var genetic = Genetic.create()
 
     DODO.populate(
@@ -51,4 +51,4 @@ if (typeof DOER === 'undefined') DOER = {};
       // 'mutation': .9, 
     })
   }
-})(DOER)
+}

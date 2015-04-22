@@ -6,14 +6,11 @@ div {
 
 div:hover {outline: 1px solid blue;}
 
-.f {
+.inner_div {
   float: left;
   display: block;
   width: 100%;
-  font-size: 4em;
-}
-
-.c {
+  font-size: 3em;
   display: table-cell;
   vertical-align: middle;
   height: inherit;
@@ -25,9 +22,5 @@ div:hover {outline: 1px solid blue;}
 }
 
 .notes {
-  font-size: 1.8em;
-}
-
-.font3 {
-  font-size: 3em;
+  font-size: 1.4em;
 }
