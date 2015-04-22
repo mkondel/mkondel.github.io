@@ -1,5 +1,3 @@
-console.log('this is j.js')
-
 $( document ).ready(function() {
 
   $('#seed, #replay, #new_dodo').addClass('b')
