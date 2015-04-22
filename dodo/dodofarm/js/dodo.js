@@ -99,4 +99,3 @@ if (typeof DODO === 'undefined') DODO = {};
       return input
     }
 })(DODO)
-console.log('DODO loaded')

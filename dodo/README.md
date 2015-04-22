@@ -1,3 +1,7 @@
+# to do right now
+- remake DODO as {}
+- more jquery, less index.html
+
 # dodofarm
 Genetic dodecaphonic composer
 
