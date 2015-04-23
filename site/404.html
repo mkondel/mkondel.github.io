@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <title>Dodo 404</title>
+</head>
+  <body>
+    <div id="404"/>
+  </body>
+
+<script>
+$( document ).ready(function() {
+
+var images = ['dikfer_404.jpg', 'geeky_404.jpg', 'oopsy_404.jpg', 'death_404.jpg', 'churc_404.jpg'];
+$('#header').css({'background-image': 'url(404/' + images[Math.floor(Math.random() * images.length)] + ')'});
+$('<img src="404/' + images[Math.floor(Math.random() * images.length)] + '">').appendTo('#404');
+
+})
+</script>
+
+</html>

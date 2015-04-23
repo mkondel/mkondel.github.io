@@ -6,7 +6,7 @@ if (typeof PLAY === 'undefined') PLAY = {
 , play_ascii: function (data) { 
     PLAY.song = data
     var actual_notes = PLAY.ascii_phrase_notes(data)
-    DOER.print_me(actual_notes, 'dodos')
+    $('#dodos').html(actual_notes.join(','))
     MIDI.loadPlugin({
       soundfontUrl: PLAY.picked_soundfont,
       instrument: PLAY.picked_instrument,
@@ -18,8 +18,9 @@ if (typeof PLAY === 'undefined') PLAY = {
     DOER.print_me(data.best.join('')+' >> '+data.worst.join(''))
     PLAY.song = data.best
     var actual_notes = PLAY.ascii_phrase_notes(data.best)
-    DOER.print_me(actual_notes, 'dodos')
-    DOER.ascii_print(PLAY.song.join(''), 'seed_string')
+    $('#dodos').html(actual_notes.join(','))
+    $('#seed_string').val(PLAY.song.join(''))
+
     MIDI.loadPlugin({
       soundfontUrl: PLAY.picked_soundfont,
       instrument: PLAY.picked_instrument,
@@ -28,7 +29,7 @@ if (typeof PLAY === 'undefined') PLAY = {
   }
 
 , play_song: function() {
-    DOER.print_me('play_song', 'logs')
+    $('#logs').html('play_song')
     DOER.stop_this = true
     var velo = 127, dura = .5, dela = 200
     // MIDI.programChange(0, MIDI.GM.byName[picked_instrument].number)

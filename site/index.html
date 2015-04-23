@@ -1,0 +1,39 @@
+<html><head>
+
+<style>
+  .rounded {
+    text-align: center;
+    font-size: 2em;
+    position: relative;
+    left: 30%;
+    top: 30%;
+    border: .5em solid green;
+    padding: 1em;
+    border-radius: 1.5em;
+    width: 30%;
+    height: 5%;
+  }
+
+  a:hover, a:visited, a:link, a:active{
+    text-decoration: none;
+  }
+
+</style>
+
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<title>Dodo Index</title>
+</head>
+<body>
+<div id="links" class="foo"><a id="linktododofarm" href="dodo">Dodo Farm</a></div>
+</body>
+
+<script>
+$( document ).ready(function() {
+  var dodofarmlink = 'http://mkondel.github.io/dodo/dodofarm/index.html'
+  $('#link').attr('href',dodofarmlink)
+  $('#links').addClass('rounded')
+  $('#links').on('click',function(){ window.location = dodofarmlink })
+})
+</script>
+
+</html>
