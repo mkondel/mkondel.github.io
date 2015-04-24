@@ -9,20 +9,20 @@ if (typeof DOER === 'undefined') DOER = {
       {
         select1:Genetic.Select1.Random, 
         select2:Genetic.Select2.FittestRandom, 
-        optimize:Genetic.Optimize.Minimize,
+        optimize:Genetic.Optimize.Maximize,
         result_callback:cb,
         genepool:PLAY.midi_genepool(21,109)
       })
 
     genetic.evolve({
-      'iterations': Math.pow(2,9), 
-      'size': Math.pow(2,9), 
+      'iterations': Math.pow(2,10), 
+      'size': Math.pow(2,10), 
       'crossover': Math.pow(2,-12), 
       'mutation': Math.pow(2,-12),
-      'skip': Math.pow(2,12)
-
       // 'crossover': .1, 
       // 'mutation': .9, 
+
+      'skip': Math.pow(2,12)
     })
   }
 

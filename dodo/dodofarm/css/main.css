@@ -1,11 +1,22 @@
 div {
-  padding: 1em;
-  text-align: center;
-  width: 50%;
   position: relative;
-  left: 25%;
+  text-align: center;
+  padding: .5em;
+  width: 60%;
+  left: 20%;
 }
+
 
 div:hover { outline: 1px solid blue; }
 
 .b { background-color: lightblue; }
+
+.loader {
+  position: absolute;
+  left: 45%;
+  top: 0px;
+  width: 10%;
+  height: 30%;
+  z-index: 9999;
+  background: url('/site/loaders/1.gif') 50% 50% no-repeat rgb(249,249,249);
+}

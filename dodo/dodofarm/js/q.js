@@ -1,11 +1,12 @@
 $( document ).ready(function() {
+
+
 self.printme = function(m){typeof console!='undefined'?console.log(m):null}
 
 var show = function(o){alert(o)}
     get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
 ,   choice = ['A','B']
 ,   store_notes = function(c){
-      // show(JSON.stringify( { yes:get_ascii(c[0]), no:get_ascii(c[1]) } ))
       var   da = get_ascii(c[0])
       ,   nyet = get_ascii(c[1])
       ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
@@ -13,9 +14,9 @@ var show = function(o){alert(o)}
       localStorage.setItem(hash, JSON.stringify( { yes:da, no:nyet } ))
     }
 
-$('div').addClass('w')
 
 DOER.do_dodos(function(data){
+  $(".loader").fadeOut()
   var A=data.best, B=data.worst
 
   $('#A')
@@ -28,7 +29,7 @@ DOER.do_dodos(function(data){
     .html(PLAY.ascii_phrase_notes(B).join(','))
     .on('click',function(){ PLAY.play_ascii(data.worst); choice=['B','A']; /*store_notes(choice)*/ })
 
-  $('#S')
+  $('.submit')
     .attr('title','Submit choice')
     .html('Submit')
     .on('click',function(){ store_notes(choice) })
