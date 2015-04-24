@@ -1,24 +1,15 @@
 div {
-  display: -webkit-flex;
-  padding: 10px;
-  border: 1px solid;
+  /*display: -webkit-flex;*/
+  /*display: inline;*/
+  padding: 1em;
+  text-align: center;
+  width: 50%;
+  position: relative;
+  left: 25%;
 }
 
 div:hover {outline: 1px solid blue;}
 
-.inner_div {
-  float: left;
-  display: block;
-  font-size: 3em;
-  text-align: center;
-}
-
 .b {
-  width: auto;
   background-color: lightblue;
-}
-
-.notes {
-  font-size: 2em;
-  background-color: lightgreen;
 }

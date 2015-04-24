@@ -1,7 +1,7 @@
 //all the misc functinos that make this page work
 if (typeof DOER === 'undefined') DOER = {
-  do_dodos: function(){
-    this.random_animal(100)
+  do_dodos: function(cb){
+    // this.random_animal(100)
     var genetic = Genetic.create()
 
     DODO.populate(
@@ -10,7 +10,7 @@ if (typeof DOER === 'undefined') DOER = {
         select1:Genetic.Select1.Random, 
         select2:Genetic.Select2.FittestRandom, 
         optimize:Genetic.Optimize.Minimize,
-        result_callback:PLAY.play_midi,
+        result_callback:cb,
         genepool:PLAY.midi_genepool(21,109)
       })
 
@@ -26,8 +26,7 @@ if (typeof DOER === 'undefined') DOER = {
     })
   }
 
-, print_me: function(m,id){ id?document.getElementById(id).innerHTML=m:console.log(m) }
-, song_over: function(cb){ $('#replay').html('replay'); DOER.stop_this = false; cb('song_over','logs') }
+, song_over: function(){ DOER.stop_this = false; printme('song_over')}
 , stop_this: false
 
 , random_animal: function(T){

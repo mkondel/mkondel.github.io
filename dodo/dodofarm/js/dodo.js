@@ -3,7 +3,7 @@
 if (typeof DODO === 'undefined') DODO = {};
 (function(DODO) { 'use strict';
     DODO.populate = function(input, options) {
-      DOER.print_me('populate_dodos','logs')
+      printme('populate_dodos')
       input.select1 = options.select1
       input.select2 = options.select2
       input.optimize = options.optimize
@@ -41,7 +41,7 @@ if (typeof DODO === 'undefined') DODO = {};
 
 
       input.seed = function() {
-        // DOER.print_me('seed: '+this.genepool, 'logs')
+        //printme('seed: '+this.genepool, 'logs')
         // var entity = this.unique_set_one_of_each(this.genepool)
         var entity = this.n_completely_random(this.genepool, 12)
         return entity
