@@ -1,6 +1,4 @@
 div {
-  /*display: -webkit-flex;*/
-  /*display: inline;*/
   padding: 1em;
   text-align: center;
   width: 50%;
@@ -8,8 +6,6 @@ div {
   left: 25%;
 }
 
-div:hover {outline: 1px solid blue;}
+div:hover { outline: 1px solid blue; }
 
-.b {
-  background-color: lightblue;
-}
+.b { background-color: lightblue; }
