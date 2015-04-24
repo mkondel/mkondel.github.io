@@ -37,8 +37,8 @@ if (typeof PLAY === 'undefined') PLAY = {
     }
 
     var tape = PLAY.song.slice()
-    PLAY.curr_notes = PLAY.ascii_phrase_notes(tape)
-    PLAY.curr_keys = PLAY.ascii_phrase_midi(tape)
+    // PLAY.curr_notes = PLAY.ascii_phrase_notes(tape)
+    // PLAY.curr_keys = PLAY.ascii_phrase_midi(tape)
     play_this(tape)
   }
 

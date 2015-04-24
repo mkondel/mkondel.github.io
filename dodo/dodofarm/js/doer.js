@@ -15,7 +15,7 @@ if (typeof DOER === 'undefined') DOER = {
       })
 
     genetic.evolve({
-      'iterations': Math.pow(2,10), 
+      'iterations': Math.pow(2,5), 
       'size': Math.pow(2,10), 
       'crossover': Math.pow(2,-12), 
       'mutation': Math.pow(2,-12),
