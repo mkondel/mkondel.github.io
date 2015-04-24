@@ -22,6 +22,10 @@ div {
   text-align: center;
 }
 
-div:hover { outline: 1px solid blue; }
+/*div:hover { outline: 1px solid blue; }*/
 
-.b { background-color: lightblue; }
+.asong {
+  display: none;
+  background-color: lightblue;
+  /*outline: 1px solid blue;*/
+}

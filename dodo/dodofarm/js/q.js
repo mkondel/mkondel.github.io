@@ -18,6 +18,13 @@ var choice = ['A','B']
         }
         return b
       }
+,   n_completely_random = function(alphabet, n){
+        var a = []
+        for(var i=n; i>0; i--){
+          a.push(alphabet[j(alphabet.length-1)])
+        }
+        return a.join('')
+      }
 
 ,   chose = function(c){
       var dics = {A:['A','B'], B:['B','A']}
@@ -34,14 +41,14 @@ var choice = ['A','B']
     }
 
 
-$('.seeder').focus()
+$('.seeder').focus().val( n_completely_random(PLAY.midi_genepool(21,109),12) )
   .bind('keypress', function(e) {
-    if(e.keyCode==13){
+    // if(e.keyCode==13){ //ENTER }
       var user_notes = $('.seeder').val().split('')
       $('#A').html(PLAY.ascii_phrase_notes( user_notes ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( unique_set_one_of_each(user_notes) ).join(','))
-      $('.submit').fadeIn()
-    }
+      $('.asong').fadeIn(1000)
+      $('.submit').fadeIn(3000)
   })
 
 $('#A').attr('title','Song A')
