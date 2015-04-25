@@ -32,8 +32,10 @@ div {
   background-color: lightblue;
 }
 
-.asong:hover {
-  outline: 1px solid blue;
+/*.asong:hover {outline: 1px solid blue;}*/
+
+.controls {
+  display: none;
 }
 
 .parent{
@@ -48,7 +50,7 @@ div {
 .right{
   float: right;
 }
-.save{
+.butts{
   display: block;
   width: 50%;
   font-size: 2em;
