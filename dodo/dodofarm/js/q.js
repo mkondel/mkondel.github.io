@@ -3,7 +3,8 @@ $( document ).ready(function() {
 $.printme = function(m){typeof console!='undefined'?console.log(m):null}
 
 var genetic = Genetic.create()
-,   plot_data = []
+,   plot_data = {from_genetic:[], from_statistics:{v:[], d:[], s:[], k:[], m:[]}}
+,   statistics = new RunningStats
 
 var choice = ['A','B']
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
@@ -71,8 +72,8 @@ var choice = ['A','B']
           // 'crossover': Math.pow(2,-12),
           // 'mutation': Math.pow(2,-12),
           'crossover': .3,
-          'mutation': .8,
-          'skip': Math.pow(2,7)
+          'mutation': .5
+          // 'skip': Math.pow(2,4)
         })
       })
     }
@@ -81,12 +82,36 @@ var choice = ['A','B']
       $('#B').html(PLAY.ascii_phrase_notes( gen['worst'].split('') ).join(','))
     }
 ,   prog_cb = function(done){
-      plot_data.push( [plot_data.length, done.stats.stdev] )
-      var options = { lines: {show: true}, points: {show: true}, xaxis: {tickDecimals: 0, tickSize: 1} }
+      statistics.Push(done.stats.stdev)
+      plot_data['from_genetic'].push( [plot_data['from_genetic'].length, done.stats.stdev] )
+
+      plot_data['from_statistics']['v'].push( [plot_data['from_statistics']['v'].length, statistics.Variance()] )
+      plot_data['from_statistics']['d'].push( [plot_data['from_statistics']['d'].length, statistics.StandardDeviation()] )
+      plot_data['from_statistics']['s'].push( [plot_data['from_statistics']['s'].length, statistics.Skewness()] )
+      plot_data['from_statistics']['k'].push( [plot_data['from_statistics']['k'].length, statistics.Kurtosis()] )
+      plot_data['from_statistics']['m'].push( [plot_data['from_statistics']['m'].length, statistics.Mean()] )
+
+      var options = {
+          lines: {show: true}
+        // , points: {show: true}
+        // , xaxis: {tickDecimals: 0, tickSize: 1}
+        , yaxes: [{min: 0}, {position: 'right'}]
+        , legend: { position: 'sw' }
+      }
       $.plot(
         '.plot', 
-        [{data: plot_data}]
+        [
+          {data: plot_data['from_genetic'], label:'stdev_genetic', yaxis: 1}
+        , {data: plot_data['from_statistics']['m'], label:'mean_runningstats', yaxis: 1}
+        // , {data: plot_data['from_statistics']['d'], label:'stdev_runningstats', yaxis: 2}
+        // , {data: plot_data['from_statistics']['v'], label:'variance_runningstats', yaxis: 2}
+        , {data: plot_data['from_statistics']['s'], label:'skewness_runningstats', yaxis: 2}
+        , {data: plot_data['from_statistics']['k'], label:'kurtosis_runningstats', yaxis: 2}
+        ]
         , options);
+
+
+
 
       $('.progressbar').progressbar({value: done.percent})
       if(done.percent==100){
