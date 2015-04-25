@@ -29,7 +29,7 @@ div {
   display: none;
   height: 2em;
   font-size: 1.2em;
-  background-color: lightblue;
+  background-color: blue;
 }
 
 /*.asong:hover {outline: 1px solid blue;}*/
@@ -51,8 +51,22 @@ div {
   float: right;
 }
 .butts{
-  display: block;
+  display: inline-block;
   width: 50%;
   font-size: 2em;
   background-color:yellow;
 }
+
+.plot {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  height:20em;
+}
+
+
+
+
+
+
+

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Rate Me!</title>
-    <link   rel="stylesheet"       href="css/main.css" />
     <link   id="favicon" rel="icon" type="image/x-icon" />
+    <title>Rate Me!</title>
+
+    <link   rel="stylesheet"       href="css/jquery-ui.min.css" />
+    <link   rel="stylesheet"       href="css/main.css" />
 
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="js/libs/jquery.elephant.min.js"></script>
+    <script src="js/libs/jq/jquery-ui.min.js"></script>
+    <script src="js/libs/jq/jquery.flot.js"></script>
 
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
     <script src="js/libs/shims/Base64.js"></script>
@@ -17,9 +20,8 @@
     <script src="js/dodo.js"></script>
 
   </head>
-  <body style="background-color: #a69bad;"><div class="container">
+  <body style="background-color: #badbad;"><div class="container">
 
-    <div class="loader"></div>
     <div>
       <label>Type anything you want, or use this random seed</label>
       <br>
@@ -36,7 +38,9 @@
         <div id="evolve" class="butts left">Evolve</div>
         <div id="save" class="butts right">Save</div>
       </div>
+    <div class="plot"></div>
     </div>
+    <div class="progressbar"></div>
 
     </div>
   

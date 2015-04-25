@@ -2,6 +2,9 @@ $( document ).ready(function() {
 
 $.printme = function(m){typeof console!='undefined'?console.log(m):null}
 
+var genetic = Genetic.create()
+,   plot_data = []
+
 var choice = ['A','B']
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
 ,   get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
@@ -46,7 +49,8 @@ var choice = ['A','B']
       return b
     }
 ,   dodos = function(ancestors){
-      var genetic = Genetic.create()
+      console.log(JSON.stringify(ancestors))
+
       $.when(
         DODO.populate(
           genetic, 
@@ -56,35 +60,50 @@ var choice = ['A','B']
             select2: Genetic.Select2.FittestRandom, 
             optimize: Genetic.Optimize.Maximize,
             start_seed: ancestors,
-            result_callback: new_gen
+            progress_callback: prog_cb,
+            result_callback: end_cb
           }))
       .done(function(data){
-        $(".loader").fadeIn()
+        $('.progressbar').fadeIn()
         data.evolve({
-          'iterations': Math.pow(2,10),
-          'size': Math.pow(2,10),
-          'crossover': Math.pow(2,-12),
-          'mutation': Math.pow(2,-12)
-          // 'crossover': .1,
-          // 'mutation': .9,
-          // 'skip': Math.pow(2,9)
+          'iterations': Math.pow(2,12),
+          'size': Math.pow(2,12),
+          // 'crossover': Math.pow(2,-12),
+          // 'mutation': Math.pow(2,-12),
+          'crossover': .3,
+          'mutation': .8,
+          'skip': Math.pow(2,7)
         })
       })
     }
-,   new_gen = function(gen){
+,   end_cb = function(gen){
       $('#A').html(PLAY.ascii_phrase_notes( gen['best'].split('') ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( gen['worst'].split('') ).join(','))
-      $(".loader").fadeOut()
     }
+,   prog_cb = function(done){
+      plot_data.push( [plot_data.length, done.stats.stdev] )
+      var options = { lines: {show: true}, points: {show: true}, xaxis: {tickDecimals: 0, tickSize: 1} }
+      $.plot(
+        '.plot', 
+        [{data: plot_data}]
+        , options);
+
+      $('.progressbar').progressbar({value: done.percent})
+      if(done.percent==100){
+        $('.progressbar').fadeOut()
+      }
+}
 
 $('.seeder').focus()
   .bind('keypress', function(e) {
-    // if(e.keyCode==13){ //ENTER }
+    if(e.keyCode==13){ //ENTER
+      $('.asong').fadeIn()
+      $('.controls').fadeIn()
+
       var user_notes = $('.seeder').val().split('')
       $('#A').html(PLAY.ascii_phrase_notes( user_notes ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( unique_set_one_of_each(user_notes) ).join(','))
-      $('.asong').fadeIn()
-      $('.controls').fadeIn()
+    }
   })
 
 $('#A').attr('title','Song A')
@@ -99,6 +118,7 @@ $('#evolve')
   .on('click',function(){ evolve(choice) })
 
 
+//this makes the first random seed for user inside the input box
 $.when(
   $(".loader").fadeOut())
 .done(function(){

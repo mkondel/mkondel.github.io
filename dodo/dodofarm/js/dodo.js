@@ -3,11 +3,10 @@
 if (typeof DODO === 'undefined') DODO = {
   populate: function(input, options) {
     input.result_callback = options.result_callback
+    input.progress_callback = options.progress_callback
     // input.result_callback('populate_dodos')
-    input.j = this.j
-    input.n_completely_random = this.n_completely_random
-    input.unique_set_one_of_each = this.unique_set_one_of_each
-
+    input.maths = this.maths
+    
     input.genepool = typeof options.genepool != 'undefined' ? 
       options.genepool : ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
     input.select1 = options.select1
@@ -27,17 +26,31 @@ if (typeof DODO === 'undefined') DODO = {
   }
 
 , seed: function() {
-    // var entity = this.unique_set_one_of_each(this.genepool)
-    // var entity = this.n_completely_random(this.genepool, 12)
-    var entity = this.unique_set_one_of_each(JSON.parse(JSON.stringify(this.ancestors.yes)).split(''))
+    // var entity = this.maths.unique_set_one_of_each(this.genepool).slice(0,12)
+    // var entity = this.maths.n_completely_random(this.genepool, 12)
+    var entity = this.maths.unique_set_one_of_each(this.ancestors.yes.split(''))
+    // var entity = this.crossover(
+    //     JSON.parse(JSON.stringify(this.ancestors.yes)).split(''),
+    //     JSON.parse(JSON.stringify(this.ancestors.no)).split('')
+    //   )[this.j(1)]
+    
     return entity
   }
 
 , mutate: function(entity) {
     var mutant = entity.slice()
-    var a=Math.floor(Math.random() * mutant.length)
-    var b=Math.floor(Math.random() * this.genepool.length)
-    mutant[a] = this.genepool[b]
+    for (var i=0; i<mutant.length; i++){
+      var random_gene = this.genepool.indexOf(mutant[i]) + Math.floor(Math.random()*mutant.length) - mutant.length
+
+      if(random_gene < 0){
+        random_gene += this.genepool.length
+      }else if(random_gene > this.genepool.length){
+        random_gene -= this.genepool.length
+      }
+
+      mutant[i] = this.genepool[random_gene]
+    }
+
     return mutant
   }
 
@@ -60,14 +73,18 @@ if (typeof DODO === 'undefined') DODO = {
     return [son, daughter];
   }
 
+, fitness_c: function(entity) {
+    return this.maths.j(entity.length)/entity.length
+  }
+
 , fitness_b: function(entity) {
-    var random_center = this.j(this.genepool.length)
+    var random_center = this.maths.n_completely_random(this.ancestors.yes.split(''), 12)
     ,   x=0
 
     for(var i=0; i<entity.length; i++){
-      x += Math.abs(this.genepool.indexOf(entity[i]) - random_center)
+      x += Math.abs(this.genepool.indexOf(entity[i]) - this.genepool.indexOf(random_center[i]))
     }
-    return this.j(x) / x
+    return this.maths.sigmoid(entity.length/x)
   }
 
 , fitness_a: function(entity) {
@@ -85,35 +102,41 @@ if (typeof DODO === 'undefined') DODO = {
 , generation: function(pop, gen, stats) {}
 
 , notification: function(pop, gen, stats, isFinished) {
+    this.progress_callback({ percent:100*gen/this.configuration.iterations, stats:JSON.parse(JSON.stringify(stats))})
     if(isFinished){
+      alert(JSON.stringify({b:pop[0],w:pop[pop.length-1]}))
+      this.progress_callback({ percent:100, stats:JSON.parse(JSON.stringify(stats))})
       this.result_callback( {gen:gen, best:pop[0].entity.join(''), worst:pop[pop.length-1].entity.join('')} )
     }else{}
   }
 
-
-  // return random integer with 0 ≤ j ≤ n
-, j: function(n){return Math.floor(Math.random() * (n+1));}
-  // Sattolo's To shuffle an array a of n elements (indices 0..n-1):
-, unique_set_one_of_each: function(a){
-    var b = a.slice()
-    var n = b.length
-    //for i from n − 1 downto 1 do
-    for(var i=n-1; i>1; i--){
-      //j ← random integer with 0 ≤ j ≤ i
-      var J = this.j(i)
-      //exchange a[j] and a[i]
-      var temp = b[i]
-      b[i] = b[J]
-      b[J] = temp
+, maths: {
+    //the one...
+    sigmoid: function(t) { return 1/(1+Math.exp(-t)) }
+    // return random integer with 0 ≤ j ≤ n
+  , j: function(n){return Math.floor(Math.random() * (n+1));}
+    // Sattolo's To shuffle an array a of n elements (indices 0..n-1):
+  , unique_set_one_of_each: function(a){
+      var b = a.slice()
+      var n = b.length
+      //for i from n − 1 downto 1 do
+      for(var i=n-1; i>1; i--){
+        //j ← random integer with 0 ≤ j ≤ i
+        var J = this.j(i)
+        //exchange a[j] and a[i]
+        var temp = b[i]
+        b[i] = b[J]
+        b[J] = temp
+      }
+      return b
     }
-    return b
-  }
-  // To shuffle an array a of n elements (indices 0..n-1):
-, n_completely_random: function(al, n){
-    var a = []
-    for(var i=n; i>0; i--){
-      a.push(al[this.j(al.length-1)])
+    // To shuffle an array a of n elements (indices 0..n-1):
+  , n_completely_random: function(al, n){
+      var a = []
+      for(var i=n; i>0; i--){
+        a.push(al[this.j(al.length-1)])
+      }
+      return a
     }
-    return a
   }
 }

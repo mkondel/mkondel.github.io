@@ -12,7 +12,7 @@ if (typeof PLAY === 'undefined') PLAY = {
 , play_song: function(song) {
     var play_me = function(){
       $.printme('play_song')
-      var velo = 127, dura = .3, dela = 200
+      var velo = 127, dura = .25, dela = 200
       // MIDI.programChange(0, MIDI.GM.byName[picked_instrument].number)
 
       var play_this = function(unplayed_notes){
