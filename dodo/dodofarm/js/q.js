@@ -94,21 +94,19 @@ var choice = ['A','B']
       var options = {
           lines: {show: true}
         // , points: {show: true}
-        // , xaxis: {tickDecimals: 0, tickSize: 1}
+        , xaxis: {tickDecimals: 0, tickSize: 1}
         , yaxes: [{min: 0}, {position: 'right'}]
         , legend: { position: 'sw' }
       }
       $.plot(
-        '.plot', 
-        [
-          {data: plot_data['from_genetic'], label:'stdev_genetic', yaxis: 1}
-        , {data: plot_data['from_statistics']['m'], label:'mean_runningstats', yaxis: 1}
-        // , {data: plot_data['from_statistics']['d'], label:'stdev_runningstats', yaxis: 2}
-        // , {data: plot_data['from_statistics']['v'], label:'variance_runningstats', yaxis: 2}
-        , {data: plot_data['from_statistics']['s'], label:'skewness_runningstats', yaxis: 2}
-        , {data: plot_data['from_statistics']['k'], label:'kurtosis_runningstats', yaxis: 2}
-        ]
-        , options);
+        '.plot', [
+            {data: plot_data['from_genetic'], label:'stdev_genetic', yaxis: 1}
+          , {data: plot_data['from_statistics']['m'], label:'mean_runningstats', yaxis: 1}
+          , {data: plot_data['from_statistics']['s'], label:'skewness_runningstats', yaxis: 2}
+          , {data: plot_data['from_statistics']['k'], label:'kurtosis_runningstats', yaxis: 2}
+          // , {data: plot_data['from_statistics']['d'], label:'stdev_runningstats', yaxis: 2}
+          // , {data: plot_data['from_statistics']['v'], label:'variance_runningstats', yaxis: 2}
+        ], options);
 
 
 
