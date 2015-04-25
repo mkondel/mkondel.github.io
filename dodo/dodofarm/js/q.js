@@ -94,7 +94,7 @@ var choice = ['A','B']
       var options = {
           lines: {show: true}
         // , points: {show: true}
-        , xaxis: {tickDecimals: 0, tickSize: 1}
+        , xaxis: {tickDecimals: 0, tickSize: 1000}
         , yaxes: [{min: 0}, {position: 'right'}]
         , legend: { position: 'sw' }
       }
