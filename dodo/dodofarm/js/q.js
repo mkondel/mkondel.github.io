@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-self.printme = function(m){typeof console!='undefined'?console.log(m):null}
+$.printme = function(m){typeof console!='undefined'?console.log(m):null}
 
 var choice = ['A','B']
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
@@ -22,29 +22,57 @@ var choice = ['A','B']
       ,   nyet = get_ascii(c[1])
       ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
 
-      alert('this is input: '+JSON.stringify({yes:da, no:nyet}, null, 2))
+      // alert('this is input: '+JSON.stringify({yes:da, no:nyet}, null, 2))
+      dodos( get_ascii(c) )
     }
 ,   n_completely_random = function(alphabet, n){
-        var a = []
-        for(var i=n; i>0; i--){
-          a.push(alphabet[j(alphabet.length-1)])
-        }
-        return a.join('')
+      var a = []
+      for(var i=n; i>0; i--){
+        a.push(alphabet[j(alphabet.length-1)])
       }
+      return a.join('')
+    }
 ,   unique_set_one_of_each = function(a){
-        var b = a.slice()
-        var n = b.length
-        //for i from n − 1 downto 1 do
-        for(var i=n-1; i>1; i--){
-          //j ← random integer with 0 ≤ j ≤ i
-          var J = j(i)
-          //exchange b[J] and b[i]
-          var temp = b[i]
-          b[i] = b[J]
-          b[J] = temp
-        }
-        return b
+      var b = a.slice()
+      var n = b.length
+      //for i from n − 1 downto 1 do
+      for(var i=n-1; i>1; i--){
+        //j ← random integer with 0 ≤ j ≤ i
+        var J = j(i)
+        //exchange b[J] and b[i]
+        var temp = b[i]
+        b[i] = b[J]
+        b[J] = temp
       }
+      return b
+    }
+,   dodos = function(ancestor){
+      var genetic = Genetic.create()
+      $.when(
+        DODO.populate(
+          genetic, 
+          {
+            genepool: PLAY.midi_genepool(21,109),
+            select1: Genetic.Select1.Random, 
+            select2: Genetic.Select2.FittestRandom, 
+            optimize: Genetic.Optimize.Maximize,
+            start_seed: ancestor,
+            result_callback: $.printme
+          }))
+      .done(function(data){
+        $.printme('still here')
+
+        data.evolve({
+          'iterations': Math.pow(2,5), 
+          'size': Math.pow(2,10), 
+          'crossover': Math.pow(2,-12), 
+          'mutation': Math.pow(2,-12)
+          // 'crossover': .1, 
+          // 'mutation': .9, 
+          // 'skip': Math.pow(2,12)
+        })
+      })
+    }
 
 $('.seeder').focus()
   .bind('keypress', function(e) {
@@ -52,8 +80,8 @@ $('.seeder').focus()
       var user_notes = $('.seeder').val().split('')
       $('#A').html(PLAY.ascii_phrase_notes( user_notes ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( unique_set_one_of_each(user_notes) ).join(','))
-      $('.asong').fadeIn(1000)
-      $('.controls').fadeIn(2000)
+      $('.asong').fadeIn()
+      $('.controls').fadeIn()
   })
 
 $('#A').attr('title','Song A')

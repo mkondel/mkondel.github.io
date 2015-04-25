@@ -1,46 +1,36 @@
 if (typeof PLAY === 'undefined') PLAY = {
     picked_instrument: "acoustic_grand_piano"
 ,   picked_soundfont: "./soundfont/"
-,   song: null
 
 , play_ascii: function (data) { 
-    PLAY.song = data
-    MIDI.loadPlugin({
-      soundfontUrl: PLAY.picked_soundfont,
-      instrument: PLAY.picked_instrument,
-      onsuccess: PLAY.play_song
-    })
+    PLAY.play_song(data)
   }
-
 , play_midi: function (data) { 
-    PLAY.song = data.best
+    PLAY.play_song(data.best)
+  }
+
+, play_song: function(song) {
+    var play_me = function(){
+      printme('play_song')
+      var velo = 127, dura = .5, dela = 200
+      // MIDI.programChange(0, MIDI.GM.byName[picked_instrument].number)
+
+      var play_this = function(unplayed_notes){
+        var note = PLAY.ascii_midi(unplayed_notes.shift())
+        MIDI.noteOn(0, note, velo, 0)
+        MIDI.noteOff(0, note, dura)
+        setTimeout(function(){
+          unplayed_notes.length==0?printme('song_over'):play_this(unplayed_notes)
+        }, dela)
+      }
+      play_this(song.slice())
+    }
     MIDI.loadPlugin({
       soundfontUrl: PLAY.picked_soundfont,
       instrument: PLAY.picked_instrument,
-      onsuccess: PLAY.play_song
+      onsuccess: play_me
     })
-  }
-
-, play_song: function() {
-    printme('play_song')
-    DOER.stop_this = true
-    var velo = 127, dura = .5, dela = 200
-    // MIDI.programChange(0, MIDI.GM.byName[picked_instrument].number)
-
-    var play_this = function(unplayed_notes){
-      var note = PLAY.ascii_midi(unplayed_notes.shift())
-      MIDI.noteOn(0, note, velo, 0)
-      MIDI.noteOff(0, note, dura)
-      setTimeout(function(){
-        unplayed_notes.length==0?DOER.song_over(printme):play_this(unplayed_notes)
-      }, dela)
-    }
-
-    var tape = PLAY.song.slice()
-    // PLAY.curr_notes = PLAY.ascii_phrase_notes(tape)
-    // PLAY.curr_keys = PLAY.ascii_phrase_midi(tape)
-    play_this(tape)
-  }
+}
 
 , midi_genepool: function(s,e){
     var list = []
