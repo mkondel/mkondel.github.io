@@ -41,14 +41,14 @@ var choice = ['A','B']
     }
 
 
-$('.seeder').focus().val( n_completely_random(PLAY.midi_genepool(21,109),12) )
+$('.seeder').focus()
   .bind('keypress', function(e) {
     // if(e.keyCode==13){ //ENTER }
       var user_notes = $('.seeder').val().split('')
       $('#A').html(PLAY.ascii_phrase_notes( user_notes ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( unique_set_one_of_each(user_notes) ).join(','))
       $('.asong').fadeIn(1000)
-      $('.submit').fadeIn(3000)
+      $('.save').fadeIn(3000)
   })
 
 $('#A').attr('title','Song A')
@@ -57,15 +57,19 @@ $('#A').attr('title','Song A')
 $('#B').attr('title','Song B')
   .on('click',function(){ choice = chose('B') })
 
-$('.submit').hide()
-  .attr('title','Submit choice')
-  .html('Submit')
+$('.save').hide()
+  .attr('title','Save choice')
   .on('click',function(){ store_notes(choice) })
-  .css('background-color','yellow')
 
 
 
-$(".loader").fadeOut()
+$.when(
+  $(".loader").fadeOut())
+.done(function(){
+  $('.seeder').val(n_completely_random(PLAY.midi_genepool(21,109),12))
+})
+
+
 })
 
 
