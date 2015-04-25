@@ -11,8 +11,8 @@ if (typeof PLAY === 'undefined') PLAY = {
 
 , play_song: function(song) {
     var play_me = function(){
-      printme('play_song')
-      var velo = 127, dura = .5, dela = 200
+      $.printme('play_song')
+      var velo = 127, dura = .3, dela = 200
       // MIDI.programChange(0, MIDI.GM.byName[picked_instrument].number)
 
       var play_this = function(unplayed_notes){
@@ -20,7 +20,7 @@ if (typeof PLAY === 'undefined') PLAY = {
         MIDI.noteOn(0, note, velo, 0)
         MIDI.noteOff(0, note, dura)
         setTimeout(function(){
-          unplayed_notes.length==0?printme('song_over'):play_this(unplayed_notes)
+          unplayed_notes.length==0?$.printme('song_over'):play_this(unplayed_notes)
         }, dela)
       }
       play_this(song.slice())

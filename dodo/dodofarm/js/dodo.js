@@ -3,18 +3,17 @@
 if (typeof DODO === 'undefined') DODO = {
   populate: function(input, options) {
     input.result_callback = options.result_callback
-    input.result_callback('populate_dodos')
+    // input.result_callback('populate_dodos')
+    input.j = this.j
+    input.n_completely_random = this.n_completely_random
+    input.unique_set_one_of_each = this.unique_set_one_of_each
 
     input.genepool = typeof options.genepool != 'undefined' ? 
       options.genepool : ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
     input.select1 = options.select1
     input.select2 = options.select2
     input.optimize = options.optimize
-    // input.ancestor = options.start_seed
-    
-    input.j = this.j
-    input.n_completely_random = this.n_completely_random
-    input.unique_set_one_of_each = this.unique_set_one_of_each
+    input.ancestors = JSON.parse(JSON.stringify(options.start_seed))
     //----------------------------------------------------
     input.seed = this.seed
     input.mutate = this.mutate
@@ -23,31 +22,14 @@ if (typeof DODO === 'undefined') DODO = {
     input.generation = this.generation
     input.notification = this.notification
 
-//     input.j = this.j.bind(input)
-//     input.n_completely_random = this.n_completely_random.bind(input)
-//     input.unique_set_one_of_each = this.unique_set_one_of_each.bind(input)
-
-//     input.select1 = options.select1
-//     input.select2 = options.select2
-//     input.optimize = options.optimize
-//     // input.ancestor = options.start_seed
-
-//     input.seed = this.seed.bind(input)
-//     input.mutate = this.mutate.bind(input)
-//     input.crossover = this.one_point_crossover.bind(input)
-//     input.fitness = this.fitness_b.bind(input)
-//     input.generation = this.generation.bind(input)
-//     input.notification = this.notification.bind(input)
-
-    input.result_callback('end of populate')
+    // input.result_callback('end of populate. ancestors: '+JSON.stringify(input.ancestors))
     return input
   }
 
 , seed: function() {
-    // this.result_callback('seed: '+this.genepool)
     // var entity = this.unique_set_one_of_each(this.genepool)
-    var entity = this.n_completely_random(this.genepool, 12)
-    // console.log('entity')
+    // var entity = this.n_completely_random(this.genepool, 12)
+    var entity = this.unique_set_one_of_each(JSON.parse(JSON.stringify(this.ancestors.yes)).split(''))
     return entity
   }
 
@@ -56,7 +38,6 @@ if (typeof DODO === 'undefined') DODO = {
     var a=Math.floor(Math.random() * mutant.length)
     var b=Math.floor(Math.random() * this.genepool.length)
     mutant[a] = this.genepool[b]
-    // this.result_callback(mutant)
     return mutant
   }
 
@@ -64,7 +45,6 @@ if (typeof DODO === 'undefined') DODO = {
     var x=Math.floor(Math.random() * (mother.length+father.length)/2),
         son=[].concat(mother.slice(0,x),father.slice(x)),
         daughter=[].concat(father.slice(0,x),mother.slice(x))
-
     return [son, daughter]
   }
 
@@ -87,9 +67,7 @@ if (typeof DODO === 'undefined') DODO = {
     for(var i=0; i<entity.length; i++){
       x += Math.abs(this.genepool.indexOf(entity[i]) - random_center)
     }
-    var s = this.j(x) / x
-    // console.log(entity + " " + s)
-    return s
+    return this.j(x) / x
   }
 
 , fitness_a: function(entity) {
@@ -104,13 +82,11 @@ if (typeof DODO === 'undefined') DODO = {
     return (sum-entity.length)*100000
   }
 
-, generation: function(pop, gen, stats) {
-    this.result_callback('gen '+gen)
-  }
+, generation: function(pop, gen, stats) {}
 
-, notification: function(pop, generation, stats, isFinished) {
+, notification: function(pop, gen, stats, isFinished) {
     if(isFinished){
-      this.result_callback({'best':pop[0].entity, 'worst':pop[pop.length-1].entity})
+      this.result_callback( {gen:gen, best:pop[0].entity.join(''), worst:pop[pop.length-1].entity.join('')} )
     }else{}
   }
 

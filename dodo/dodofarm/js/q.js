@@ -20,10 +20,9 @@ var choice = ['A','B']
 ,   evolve = function(c){
       var   da = get_ascii(c[0])
       ,   nyet = get_ascii(c[1])
-      ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
+      // ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
 
-      // alert('this is input: '+JSON.stringify({yes:da, no:nyet}, null, 2))
-      dodos( get_ascii(c) )
+      dodos( {yes:da, no:nyet} )
     }
 ,   n_completely_random = function(alphabet, n){
       var a = []
@@ -46,7 +45,7 @@ var choice = ['A','B']
       }
       return b
     }
-,   dodos = function(ancestor){
+,   dodos = function(ancestors){
       var genetic = Genetic.create()
       $.when(
         DODO.populate(
@@ -56,22 +55,26 @@ var choice = ['A','B']
             select1: Genetic.Select1.Random, 
             select2: Genetic.Select2.FittestRandom, 
             optimize: Genetic.Optimize.Maximize,
-            start_seed: ancestor,
-            result_callback: $.printme
+            start_seed: ancestors,
+            result_callback: new_gen
           }))
       .done(function(data){
-        $.printme('still here')
-
+        $(".loader").fadeIn()
         data.evolve({
-          'iterations': Math.pow(2,5), 
-          'size': Math.pow(2,10), 
-          'crossover': Math.pow(2,-12), 
+          'iterations': Math.pow(2,10),
+          'size': Math.pow(2,10),
+          'crossover': Math.pow(2,-12),
           'mutation': Math.pow(2,-12)
-          // 'crossover': .1, 
-          // 'mutation': .9, 
-          // 'skip': Math.pow(2,12)
+          // 'crossover': .1,
+          // 'mutation': .9,
+          // 'skip': Math.pow(2,9)
         })
       })
+    }
+,   new_gen = function(gen){
+      $('#A').html(PLAY.ascii_phrase_notes( gen['best'].split('') ).join(','))
+      $('#B').html(PLAY.ascii_phrase_notes( gen['worst'].split('') ).join(','))
+      $(".loader").fadeOut()
     }
 
 $('.seeder').focus()
