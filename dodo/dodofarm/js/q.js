@@ -68,7 +68,7 @@ var choice = ['A','B']
         $('.progressbar').fadeIn()
         data.evolve({
           'iterations': Math.pow(2,12),
-          'size': Math.pow(2,12),
+          'size': Math.pow(2,10),
           // 'crossover': Math.pow(2,-12),
           // 'mutation': Math.pow(2,-12),
           'crossover': .3,
