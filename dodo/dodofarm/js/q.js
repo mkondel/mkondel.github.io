@@ -57,8 +57,8 @@ var choice = ['A','B']
           genetic, 
           {
             genepool: PLAY.midi_genepool(21,109),
-            select1: Genetic.Select1.Random, 
-            select2: Genetic.Select2.FittestRandom, 
+            select1: Genetic.Select1.Fittest, 
+            select2: Genetic.Select2.RandomLinearRank, 
             optimize: Genetic.Optimize.Maximize,
             start_seed: ancestors,
             progress_callback: prog_cb,
@@ -72,8 +72,8 @@ var choice = ['A','B']
           // 'crossover': Math.pow(2,-12),
           // 'mutation': Math.pow(2,-12),
           'crossover': .3,
-          'mutation': .5
-          // 'skip': Math.pow(2,4)
+          'mutation': .5,
+          'skip': Math.pow(2,4)
         })
       })
     }
