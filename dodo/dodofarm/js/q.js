@@ -8,14 +8,13 @@ if( ns.localStorage.isEmpty() ){
 }
 
 
-
-var genetic = Genetic.create()
-,   plot_data = {from_genetic:[], from_statistics:{v:[], d:[], s:[], k:[], m:[]}}
-,   statistics = new RunningStats
-
 var choice = [1,0]
+,   genetic = Genetic.create()
+,   plot_data = {from_genetic:[], from_statistics:{}}
+,   statistics = new RunningStats
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
 ,   get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
+
 ,   chose = function(c){
       var dics = {A:[1,0], B:[0,1]}
       PLAY.play_ascii( get_ascii(c).split('') )
@@ -33,12 +32,7 @@ var choice = [1,0]
       ,   nyet = get_ascii(AB[1])
       ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
 
-      // alert(JSON.stringify( get_synaptic_training_set({ yes:da, no:nyet }) ))
-      // localStorage.setItem(hash, JSON.stringify( { yes:da, no:nyet } ))
-      // localStorage.setItem(hash, JSON.stringify( get_synaptic_training_set({ yes:da, no:nyet }) ))
-
       var a = ns.localStorage.get('training_set')
-      // alert(get_synaptic_training_set({ yes:da, no:nyet }))
       a[hash] = ( get_synaptic_training_set({ yes:da, no:nyet }) )
       ns.localStorage.set('training_set',a)
     }
@@ -50,7 +44,7 @@ var choice = [1,0]
         // console.log(JSON.stringify(stored_set[i]))
         as_training_set.push( stored_set[i] )
       })
-      alert(JSON.stringify(as_training_set))
+      console.log(JSON.stringify(as_training_set))
       return as_training_set
     }
 ,   evolve = function(c){
@@ -100,29 +94,31 @@ var choice = [1,0]
       .done(function(data){
         $('.progressbar').fadeIn()
         data.evolve({
-          'iterations': Math.pow(2,12),
-          'size': Math.pow(2,10),
+          'iterations': Math.pow(2,10),
+          'size': Math.pow(2,8),
           // 'crossover': Math.pow(2,-12),
           // 'mutation': Math.pow(2,-12),
           'crossover': .3,
           'mutation': .5,
-          'skip': Math.pow(2,4)
+          'skip': Math.pow(2,5)
         })
       })
     }
 ,   end_cb = function(gen){
+      console.log(JSON.stringify(gen,null,1))
       $('#A').html(PLAY.ascii_phrase_notes( gen['best'].split('') ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( gen['worst'].split('') ).join(','))
     }
-,   prog_cb = function(done){
-      statistics.Push(done.stats.stdev)
-      plot_data['from_genetic'].push( [plot_data['from_genetic'].length, done.stats.stdev] )
-
-      plot_data['from_statistics']['v'].push( [plot_data['from_statistics']['v'].length, statistics.Variance()] )
-      plot_data['from_statistics']['d'].push( [plot_data['from_statistics']['d'].length, statistics.StandardDeviation()] )
-      plot_data['from_statistics']['s'].push( [plot_data['from_statistics']['s'].length, statistics.Skewness()] )
-      plot_data['from_statistics']['k'].push( [plot_data['from_statistics']['k'].length, statistics.Kurtosis()] )
-      plot_data['from_statistics']['m'].push( [plot_data['from_statistics']['m'].length, statistics.Mean()] )
+,   prog_cb = function(data){
+      // statistics.Push(data.stats.error)
+      // plot_data['from_genetic'].push( [plot_data['from_genetic'].length, data.stats.error] )
+      statistics.Push(data.stats.stdev)
+      plot_data['from_genetic'].push( [plot_data['from_genetic'].length, data.stats.stdev] )
+      var series_to_plot = [ {data: plot_data['from_genetic']
+                  , label:'error_in_training'
+                  , yaxis: 1
+                  , lines:{lineWidth: 10}
+                  , color: "#f00"} ]
 
       var options = {
           lines: {show: true}
@@ -131,21 +127,38 @@ var choice = [1,0]
         , yaxes: [{min: 0}, {position: 'right'}]
         , legend: { position: 'sw' }
       }
-      $.plot(
-        '.plot', [
-            {data: plot_data['from_genetic'], label:'stdev_genetic', yaxis: 1}
-          , {data: plot_data['from_statistics']['m'], label:'mean_runningstats', yaxis: 1}
-          , {data: plot_data['from_statistics']['s'], label:'skewness_runningstats', yaxis: 2}
-          , {data: plot_data['from_statistics']['k'], label:'kurtosis_runningstats', yaxis: 2}
-          // , {data: plot_data['from_statistics']['d'], label:'stdev_runningstats', yaxis: 2}
-          // , {data: plot_data['from_statistics']['v'], label:'variance_runningstats', yaxis: 2}
-        ], options);
+      var push_plot_data = function(data){
+        for(var i=0; i<data.length; i++){
+          var this_plot = plot_data['from_statistics'][data[i].label]
+
+          if(this_plot){
+            var datum = [ this_plot.length, data[i].val ]
+            this_plot.push(datum)
+          }else{
+            plot_data['from_statistics'][data[i].label] = [ datum ]
+          }
+
+          series_to_plot.push({
+              data: plot_data['from_statistics'][ data[i].label ]
+            , label: data[i].label
+            , yaxis: data[i].yaxis
+          })
+        }
+      }
+      push_plot_data([
+              {val: statistics.Variance(), label: 'variance', yaxis: 2}
+          ,   {val: statistics.StandardDeviation(), label: 'stdev', yaxis: 1}
+          ,   {val: statistics.Skewness(), label: 'skewness', yaxis: 2}
+          ,   {val: statistics.Kurtosis(), label: 'kurtosis', yaxis: 2}
+          ,   {val: statistics.Mean(), label: 'mean', yaxis: 1}
+        ])
+      $.plot('.plot', series_to_plot, options)
 
 
 
 
-      $('.progressbar').progressbar({value: done.percent})
-      if(done.percent==100){
+      $('.progressbar').progressbar({value: data.percent})
+      if(data.percent==100){
         $('.progressbar').fadeOut()
       }
 }

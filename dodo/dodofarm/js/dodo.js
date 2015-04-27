@@ -104,7 +104,6 @@ if (typeof DODO === 'undefined') DODO = {
 , notification: function(pop, gen, stats, isFinished) {
     this.progress_callback({ percent:100*gen/this.configuration.iterations, stats:JSON.parse(JSON.stringify(stats))})
     if(isFinished){
-      alert(JSON.stringify({b:pop[0],w:pop[pop.length-1]}))
       this.progress_callback({ percent:100, stats:JSON.parse(JSON.stringify(stats))})
       this.result_callback( {gen:gen, best:pop[0].entity.join(''), worst:pop[pop.length-1].entity.join('')} )
     }else{}
