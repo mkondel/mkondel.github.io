@@ -1,29 +1,62 @@
 $( document ).ready(function() {
-
 $.printme = function(m){typeof console!='undefined'?console.log(m):null}
+
+var storage_namespace = 'dodo'
+var ns=$.initNamespaceStorage(storage_namespace);
+if( ns.localStorage.isEmpty() ){
+  ns.localStorage.set('training_set',{})
+}
+
+
 
 var genetic = Genetic.create()
 ,   plot_data = {from_genetic:[], from_statistics:{v:[], d:[], s:[], k:[], m:[]}}
 ,   statistics = new RunningStats
 
-var choice = ['A','B']
+var choice = [1,0]
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
 ,   get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
 ,   chose = function(c){
-      var dics = {A:['A','B'], B:['B','A']}
+      var dics = {A:[1,0], B:[0,1]}
       PLAY.play_ascii( get_ascii(c).split('') )
       return dics[c]
     }
+,   map_back_to_AB = function(c){
+      return c[0]?['A','B']:['B','A']
+    }
+,   get_synaptic_training_set = function(old_way){
+      return { input:[old_way.yes+old_way.no], output:choice }
+    }
 ,   save = function(c){
-      var   da = get_ascii(c[0])
-      ,   nyet = get_ascii(c[1])
+      var AB = map_back_to_AB(c)
+      ,   da = get_ascii(AB[0])
+      ,   nyet = get_ascii(AB[1])
       ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
 
-      localStorage.setItem(hash, JSON.stringify( { yes:da, no:nyet } ))
+      // alert(JSON.stringify( get_synaptic_training_set({ yes:da, no:nyet }) ))
+      // localStorage.setItem(hash, JSON.stringify( { yes:da, no:nyet } ))
+      // localStorage.setItem(hash, JSON.stringify( get_synaptic_training_set({ yes:da, no:nyet }) ))
+
+      var a = ns.localStorage.get('training_set')
+      // alert(get_synaptic_training_set({ yes:da, no:nyet }))
+      a[hash] = ( get_synaptic_training_set({ yes:da, no:nyet }) )
+      ns.localStorage.set('training_set',a)
+    }
+,   feed_to_neural = function(){
+      var stored_set = ns.localStorage.get('training_set')
+      ,   as_training_set = []
+
+      Object.keys(stored_set).forEach(function(i){
+        // console.log(JSON.stringify(stored_set[i]))
+        as_training_set.push( stored_set[i] )
+      })
+      alert(JSON.stringify(as_training_set))
+      return as_training_set
     }
 ,   evolve = function(c){
-      var   da = get_ascii(c[0])
-      ,   nyet = get_ascii(c[1])
+      var AB = map_back_to_AB(c)
+      ,   da = get_ascii(AB[0])
+      ,   nyet = get_ascii(AB[1])
       // ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
 
       dodos( {yes:da, no:nyet} )
@@ -139,6 +172,9 @@ $('#save')
 $('#evolve')
   .attr('title','Evolve chosen')
   .on('click',function(){ evolve(choice) })
+$('#export')
+  .attr('title','Export all ranked')
+  .on('click',function(){ feed_to_neural(choice) })
 
 
 //this makes the first random seed for user inside the input box

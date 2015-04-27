@@ -10,12 +10,15 @@
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="js/libs/jq/jquery-ui.min.js"></script>
     <script src="js/libs/jq/jquery.flot.js"></script>
+    <script src="js/libs/jq/jquery.storageapi.min.js"></script>
 
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
     <script src="js/libs/shims/Base64.js"></script>
     <script src="js/libs/shims/Base64binary.js"></script>
     <script src="js/libs/MIDI.js"></script>
     <script src="js/libs/genetic.js"></script>
+    <script src="js/libs/synaptic.js"></script>
+
     <script src="js/play.js"></script>
     <script src="js/dodo.js"></script>
     <script src="js/running_stats.js"></script>
@@ -37,7 +40,8 @@
     <div class="parent">
       <div class="controls">
         <div id="evolve" class="butts left">Evolve</div>
-        <div id="save" class="butts right">Save</div>
+        <div id="save" class="butts auto">Save</div>
+        <div id="export" class="butts right">Export</div>
       </div>
     </div>
     <div class="plot"></div>
@@ -46,5 +50,6 @@
     </div>
   
   </div></body>
+  <script src="js/nn.js"></script>
   <script src="js/q.js"></script>
 </html>
