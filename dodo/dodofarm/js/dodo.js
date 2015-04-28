@@ -17,7 +17,7 @@ if (typeof DODO === 'undefined') DODO = {
     input.seed = this.seed
     input.mutate = this.mutate
     input.crossover = this.one_point_crossover
-    input.fitness = this.fitness_b
+    input.fitness = this.ancestral_fitness
     input.generation = this.generation
     input.notification = this.notification
 
@@ -77,7 +77,7 @@ if (typeof DODO === 'undefined') DODO = {
     return this.maths.j(entity.length)/entity.length
   }
 
-, fitness_b: function(entity) {
+, ancestral_fitness: function(entity) {
     var random_center = this.maths.n_completely_random(this.ancestors.yes.split(''), 12)
     ,   x=0
 

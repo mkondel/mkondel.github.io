@@ -14,46 +14,33 @@ var choice = [1,0]
 ,   statistics = new RunningStats
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
 ,   get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
+,   evolve = function(c){ dodos( pair_and_choice(c) ) }
+,   map_back_to_AB = function(c){ return c[0]?['A','B']:['B','A'] }
+,   get_synaptic_training_set = function(old_way){ 
+      if(choice == [1,0]){ return { input:[old_way.yes, old_way.no], output:choice } }
+      else{ return { input:[old_way.no, old_way.yes], output:choice } }
+    }
 
 ,   chose = function(c){
       var dics = {A:[1,0], B:[0,1]}
       PLAY.play_ascii( get_ascii(c).split('') )
       return dics[c]
     }
-,   map_back_to_AB = function(c){
-      return c[0]?['A','B']:['B','A']
-    }
-,   get_synaptic_training_set = function(old_way){
-      return { input:[old_way.yes+old_way.no], output:choice }
-    }
 ,   save = function(c){
       var AB = map_back_to_AB(c)
-      ,   da = get_ascii(AB[0])
-      ,   nyet = get_ascii(AB[1])
-      ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
+      ,   pac = pair_and_choice(c)
+      ,   hash = CryptoJS.SHA3(pac.yes+pac.no, { outputLength: 64 })
+      ,   a = ns.localStorage.get('training_set')
 
-      var a = ns.localStorage.get('training_set')
-      a[hash] = ( get_synaptic_training_set({ yes:da, no:nyet }) )
+      a[hash] = ( get_synaptic_training_set( pac ) )
+      // console.log(JSON.stringify(get_synaptic_training_set( pac )))
       ns.localStorage.set('training_set',a)
     }
-,   feed_to_neural = function(){
-      var stored_set = ns.localStorage.get('training_set')
-      ,   as_training_set = []
-
-      Object.keys(stored_set).forEach(function(i){
-        // console.log(JSON.stringify(stored_set[i]))
-        as_training_set.push( stored_set[i] )
-      })
-      console.log(JSON.stringify(as_training_set))
-      return as_training_set
-    }
-,   evolve = function(c){
+,   pair_and_choice = function(c){
       var AB = map_back_to_AB(c)
       ,   da = get_ascii(AB[0])
       ,   nyet = get_ascii(AB[1])
-      // ,   hash = CryptoJS.SHA3(da+nyet, { outputLength: 64 })
-
-      dodos( {yes:da, no:nyet} )
+      return {yes:da, no:nyet, c:c}
     }
 ,   n_completely_random = function(alphabet, n){
       var a = []
@@ -104,16 +91,35 @@ var choice = [1,0]
         })
       })
     }
+,   feed_to_neural = function(c){
+      var pac = pair_and_choice(c)
+      ,   input_to_neural = get_synaptic_training_set(pac)
+
+      console.log(JSON.stringify(input_to_neural))
+    }
+,   learn_all = function(){
+      var stored_set = ns.localStorage.get('training_set')
+      ,   as_training_set = []
+
+      Object.keys(stored_set).forEach(function(i){
+        as_training_set.push( stored_set[i] )
+      })
+      // console.log(JSON.stringify(as_training_set))
+      return as_training_set
+    }
 ,   end_cb = function(gen){
       console.log(JSON.stringify(gen,null,1))
       $('#A').html(PLAY.ascii_phrase_notes( gen['best'].split('') ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( gen['worst'].split('') ).join(','))
     }
 ,   prog_cb = function(data){
+
       // statistics.Push(data.stats.error)
       // plot_data['from_genetic'].push( [plot_data['from_genetic'].length, data.stats.error] )
+
       statistics.Push(data.stats.stdev)
       plot_data['from_genetic'].push( [plot_data['from_genetic'].length, data.stats.stdev] )
+
       var series_to_plot = [ {data: plot_data['from_genetic']
                   , label:'error_in_training'
                   , yaxis: 1
@@ -122,8 +128,7 @@ var choice = [1,0]
 
       var options = {
           lines: {show: true}
-        // , points: {show: true}
-        , xaxis: {tickDecimals: 0, tickSize: 1000}
+        , xaxis: {tickDecimals: 0}
         , yaxes: [{min: 0}, {position: 'right'}]
         , legend: { position: 'sw' }
       }
@@ -147,15 +152,12 @@ var choice = [1,0]
       }
       push_plot_data([
               {val: statistics.Variance(), label: 'variance', yaxis: 2}
-          ,   {val: statistics.StandardDeviation(), label: 'stdev', yaxis: 1}
+          // ,   {val: statistics.StandardDeviation(), label: 'standard_deviation', yaxis: 1}
           ,   {val: statistics.Skewness(), label: 'skewness', yaxis: 2}
           ,   {val: statistics.Kurtosis(), label: 'kurtosis', yaxis: 2}
           ,   {val: statistics.Mean(), label: 'mean', yaxis: 1}
         ])
       $.plot('.plot', series_to_plot, options)
-
-
-
 
       $('.progressbar').progressbar({value: data.percent})
       if(data.percent==100){
@@ -185,8 +187,8 @@ $('#save')
 $('#evolve')
   .attr('title','Evolve chosen')
   .on('click',function(){ evolve(choice) })
-$('#export')
-  .attr('title','Export all ranked')
+$('#train')
+  .attr('title','Train with all saved')
   .on('click',function(){ feed_to_neural(choice) })
 
 
