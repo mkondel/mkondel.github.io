@@ -97,10 +97,9 @@ var choice = [1,0]
 ,   feed_to_neural = function(c){
       var pac = pair_and_choice(c)
       ,   input_to_neural = get_synaptic_training_set(pac)
-
-      console.log(JSON.stringify(input_to_neural))
+      NETWORK.ACTIVATE_AND_COMPARE( input_to_neural )
     }
-,   learn_all = function(){
+,   learn_all_stored = function(){
       var stored_set = ns.localStorage.get('training_set')
       ,   as_training_set = []
 
@@ -108,7 +107,7 @@ var choice = [1,0]
         as_training_set.push( stored_set[i] )
       })
       // console.log(JSON.stringify(as_training_set))
-      return as_training_set
+      NN.init_and_run( as_training_set )
     }
 ,   end_cb = function(gen){
       console.log(JSON.stringify(gen,null,1))
@@ -177,6 +176,8 @@ $('.seeder').focus()
       var user_notes = $('.seeder').val().split('')
       $('#A').html(PLAY.ascii_phrase_notes( user_notes ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( unique_set_one_of_each(user_notes) ).join(','))
+
+      console.log(JSON.stringify(learn_all_stored()))
     }
   })
 
@@ -190,9 +191,12 @@ $('#save')
 $('#evolve')
   .attr('title','Evolve chosen')
   .on('click',function(){ evolve(choice) })
-$('#train')
-  .attr('title','Train with all saved')
-  .on('click',function(){ feed_to_neural(choice) })
+$('#learn')
+  .attr('title','Learn from saved')
+  .on('click',function(){ console.log(JSON.stringify(learn_all_stored())) })
+$('#feed')
+  .attr('title','Try current with neural')
+  .on('click',function(){ console.log(JSON.stringify(feed_to_neural(choice))) })
 
 
 //this makes the first random seed for user inside the input box
