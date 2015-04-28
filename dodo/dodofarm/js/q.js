@@ -12,10 +12,15 @@ var choice = [1,0]
 ,   genetic = Genetic.create()
 ,   plot_data = {from_genetic:[], from_statistics:{}}
 ,   statistics = new RunningStats
+
 ,   j = function(n){return Math.floor(Math.random() * (n+1))}
-,   get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
-,   evolve = function(c){ dodos( pair_and_choice(c) ) }
+
 ,   map_back_to_AB = function(c){ return c[0]?['A','B']:['B','A'] }
+
+,   get_ascii = function(x){ return PLAY.note_phrase_ascii($('#'+x).html().split(',')).join('') }
+
+,   evolve = function(c){ dodos( pair_and_choice(c) ) }
+
 ,   get_synaptic_training_set = function(old_way){ 
       if(choice == [1,0]){ return { input:[old_way.yes, old_way.no], output:choice } }
       else{ return { input:[old_way.no, old_way.yes], output:choice } }
@@ -63,9 +68,7 @@ var choice = [1,0]
       }
       return b
     }
-,   dodos = function(ancestors){
-      console.log(JSON.stringify(ancestors))
-
+,   dodos = function(data){
       $.when(
         DODO.populate(
           genetic, 
@@ -74,7 +77,7 @@ var choice = [1,0]
             select1: Genetic.Select1.Fittest, 
             select2: Genetic.Select2.RandomLinearRank, 
             optimize: Genetic.Optimize.Maximize,
-            start_seed: ancestors,
+            start_seed: [data.yes, data.no], //wants [worst, best]
             progress_callback: prog_cb,
             result_callback: end_cb
           }))

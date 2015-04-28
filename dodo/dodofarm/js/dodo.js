@@ -12,8 +12,8 @@ if (typeof DODO === 'undefined') DODO = {
     input.select1 = options.select1
     input.select2 = options.select2
     input.optimize = options.optimize
-    input.ancestors = JSON.parse(JSON.stringify(options.start_seed))
-    //----------------------------------------------------
+    input.ancestors = JSON.parse(JSON.stringify(options.start_seed)) //[0: worst, 1: best]
+    //--------------------------------------------------------------
     input.seed = this.seed
     input.mutate = this.mutate
     input.crossover = this.one_point_crossover
@@ -21,17 +21,16 @@ if (typeof DODO === 'undefined') DODO = {
     input.generation = this.generation
     input.notification = this.notification
 
-    // input.result_callback('end of populate. ancestors: '+JSON.stringify(input.ancestors))
     return input
   }
 
 , seed: function() {
     // var entity = this.maths.unique_set_one_of_each(this.genepool).slice(0,12)
     // var entity = this.maths.n_completely_random(this.genepool, 12)
-    var entity = this.maths.unique_set_one_of_each(this.ancestors.yes.split(''))
+    var entity = this.maths.unique_set_one_of_each(this.ancestors[1].split(''))
     // var entity = this.crossover(
-    //     JSON.parse(JSON.stringify(this.ancestors.yes)).split(''),
-    //     JSON.parse(JSON.stringify(this.ancestors.no)).split('')
+    //     JSON.parse(JSON.stringify(this.ancestors[1])).split(''),
+    //     JSON.parse(JSON.stringify(this.ancestors[0])).split('')
     //   )[this.j(1)]
     
     return entity
@@ -78,7 +77,7 @@ if (typeof DODO === 'undefined') DODO = {
   }
 
 , ancestral_fitness: function(entity) {
-    var random_center = this.maths.n_completely_random(this.ancestors.yes.split(''), 12)
+    var random_center = this.maths.n_completely_random(this.ancestors[1].split(''), this.ancestors[1].length)
     ,   x=0
 
     for(var i=0; i<entity.length; i++){
@@ -102,9 +101,9 @@ if (typeof DODO === 'undefined') DODO = {
 , generation: function(pop, gen, stats) {}
 
 , notification: function(pop, gen, stats, isFinished) {
-    this.progress_callback({ percent:100*gen/this.configuration.iterations, stats:JSON.parse(JSON.stringify(stats))})
+    this.progress_callback({ percent:100*gen/this.configuration.iterations, stats:JSON.parse(JSON.stringify(stats)), gen: gen})
     if(isFinished){
-      this.progress_callback({ percent:100, stats:JSON.parse(JSON.stringify(stats))})
+      this.progress_callback({ percent:100, stats:JSON.parse(JSON.stringify(stats)), gen: gen})
       this.result_callback( {gen:gen, best:pop[0].entity.join(''), worst:pop[pop.length-1].entity.join('')} )
     }else{}
   }
