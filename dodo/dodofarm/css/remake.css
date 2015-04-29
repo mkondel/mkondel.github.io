@@ -21,21 +21,24 @@
 }
 
 
-.controls {
-  position: relative;
-  width: 30%;
-  left: 10%;
-}
-
-.controls label{
-  font-style: italic; font-size: smaller;
-}
-
 .butt {
   outline: solid; outline-width: 1px;
 }
-
-
+.buttpane {
+  position: relative;
+  width: 30%;
+}
+.buttpane label{
+  font-style: italic; font-size: smaller;
+}
+.controls {
+  left: 10%;
+  float: left;
+}
+.brains {
+  right: 10%;
+  float: right;
+}
 
 
 
