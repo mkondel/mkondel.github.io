@@ -23,7 +23,7 @@ var choice = [1,0]
 
 ,   get_synaptic_training_set = function(old_way){ 
       if(choice == [1,0]){ return { input:[old_way.yes, old_way.no], output:choice } }
-      else{ return { input:[old_way.no, old_way.yes], output:choice } }
+      else{ return { input:[old_way.no, old_way.yes], output:[0,1] } }
     }
 
 ,   chose = function(c){
@@ -176,8 +176,7 @@ $('.seeder').focus()
       var user_notes = $('.seeder').val().split('')
       $('#A').html(PLAY.ascii_phrase_notes( user_notes ).join(','))
       $('#B').html(PLAY.ascii_phrase_notes( unique_set_one_of_each(user_notes) ).join(','))
-
-      console.log(JSON.stringify(learn_all_stored()))
+      choice = [1,0]
     }
   })
 

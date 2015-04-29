@@ -55,7 +55,7 @@ if (typeof NN === 'undefined') NN = {
       .input
         .join('').split('')
           .map(function(note){
-            return 30*synaptic.Neuron.squash.TANH(1/note.charCodeAt())
+            return 30*synaptic.Neuron.squash.IDENTITY(1/note.charCodeAt())
           })
             .slice(0,this.Nin)
   }
@@ -70,7 +70,8 @@ if (typeof NN === 'undefined') NN = {
       //this is where prediction will happen
       console.log(
         sample_set_of_all[idx].input.join('\t') +'\t['+ 
-        sample_set_of_all[idx].output +']'+ 
+        sample_set_of_all[idx].output +']\t'+ 
+        // (function(){ return test_output[0]>test_output[1]?'|-->>':'<<--|' })()
         test_output
       )
     })
@@ -82,10 +83,10 @@ if (typeof NN === 'undefined') NN = {
     //=======================================
     // progress callback
     var custom_logger = function(stat_now) {
-        if(stat_now.error < 12e-2){
-          // console.log(stat_now)
-          this.test_all(new_training_sample)
-        }
+        // if(stat_now.error > 1.1){
+          console.log(stat_now)
+          // this.test_all(new_training_sample)
+        // }
       }
 
     var ns=$.initNamespaceStorage(this.storage_namespace);
@@ -108,14 +109,24 @@ if (typeof NN === 'undefined') NN = {
     this.network = new synaptic.Architect.Perceptron(this.Nin, this.Nin*this.H, this.O)
     var trainer = new synaptic.Trainer(this.network)
     var foo = this
-    console.log('Final:' + JSON.stringify(trainer.train( training_set, {
-        rate: 3e-3,
-        iterations: 3e5,
-        error: 3e-3,
-        customLog: { every: 3e3, do: custom_logger.bind(foo) }
+
+    var bla = this.sample_sets['24'].map(function(x){ return {input:NN.transform(x), output:x.output} })
+    // for(var i=0; i<bla.length; i++){
+    //   console.log(JSON.stringify(bla[i]))
+    //   console.log(JSON.stringify(training_set[i]))
+    // }
+    // console.log('Final:' + JSON.stringify(trainer.train( training_set, {
+    console.log('Final:' + JSON.stringify(trainer.train( bla, {
+        rate: 1e-7,
+        iterations: 100,
+        error: .1,
+        customLog: { every: 1e3, do: custom_logger.bind(foo) },
+        cost: trainer.cost.MSE
     })))
 
-    // ns.localStorage.set('brains',this.network.toJSON())
+    this.test_all(this.sample_sets['24'])
+    // this.test_all(new_training_sample)
+    ns.localStorage.set('brains',this.network.toJSON())
   }
 }
 
