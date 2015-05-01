@@ -7,17 +7,17 @@
 
 .main {
   text-align: center;
-  background-color: rgb(20,30,40);
-  color: rgb(200,240,60);
+  background-color: #1e284a;
+  color: #e3f3cf;
 }
 
 .asong {
   display: inline-block;
   position: relative;
   width: 1.2em;
-  background-color: rgb(60,90,120);
-  color: rgb(250,250,150);
+  background-color: #444d6c;
   font-size: 5em;
+  color: #e3e773;
 }
 
 .pane {
