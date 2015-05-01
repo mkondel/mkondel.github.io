@@ -10,7 +10,7 @@ jQuery.cachedScript = function( url, options ) {
 $.when(
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////// -->
-    // $.cachedScript( 'http://code.jquery.com/ui/1.11.4/jquery-ui.min.js' ),
+    $.cachedScript( 'http://code.jquery.com/ui/1.11.4/jquery-ui.min.js' ),
     $.cachedScript( 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js' ),
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////// -->

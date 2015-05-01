@@ -20,27 +20,21 @@
   font-size: 5em;
 }
 
-
-.butt {
-  outline: solid; outline-width: 1px;
-}
-.buttpane {
+.pane {
+  width: 20%;
   position: relative;
-  width: 30%;
 }
-.buttpane label{
+.pane label{
   font-style: italic; font-size: smaller;
 }
 .controls {
-  left: 10%;
+  left: 20%;
   float: left;
 }
 .brains {
-  right: 10%;
+  right: 20%;
   float: right;
 }
-
-
-
-
-
+.butt {
+  margin: .3em;
+}
