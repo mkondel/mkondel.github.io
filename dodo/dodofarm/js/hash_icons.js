@@ -2,7 +2,7 @@
 
   $.fn.add_canvas = function(m){
     var id = 'canvas'+$('canvas').length
-    var width = height = 50
+    var width = height = 32
     ,   canvas_proto = '<canvas id="'+ id +'" width="'+width+'" height="'+height+'"/>'
     this.append( canvas_proto )
     $('#'+id).Hashicon({message:m})

@@ -12,11 +12,13 @@ $( document ).ready(function() {
   // $('.butt').button()
 
   $('#feed').on('click',function(){
-    $('.brains').add_canvas( '' )
+    $('.brains').add_canvas( Math.random().toString() )
   })
 
   $('#learn').on('click',function(){
-    $('.brains').add_canvas( '' )
+    for(var i=0; i<32; i++){
+      $('.brains').add_canvas( Math.random().toString() )
+    }
   })
 
 // console.log(c.toDataURL('image/png'))
