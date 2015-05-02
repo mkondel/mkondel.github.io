@@ -19,11 +19,15 @@ $( document ).ready(function() {
     }
   })
 
-  $('#feed').on('click',function(){
+  $('#save').on('click', function(){
+    $('.asong').effect("transfer",{ to: $("#learn") }, 500);
+  })
+
+  $('#feed').on('click', function(){
     $('.brains').add_canvas( Math.random().toString() )
   })
 
-  $('#learn').on('click',function(){
+  $('#learn').on('click', function(){
     for(var i=0; i<32; i++){
       $('.brains').add_canvas( Math.random().toString() )
     }

@@ -21,10 +21,12 @@
   margin: .1em;
 }
 .outlined {
-  outline-style: inset;
+  /*outline-style: inset;*/
+  outline-style: dashed;
   outline-offset: .05em;
   outline-color: #b31403;
 }
+.ui-effects-transfer { border: 2px solid black; }
 
 .pane {
   width: 30%;
