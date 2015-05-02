@@ -11,6 +11,14 @@ $( document ).ready(function() {
 
   // $('.butt').button()
 
+  $('.asong').on('click',function(){
+    if( !$('.asong').hasClass('outlined') ){
+      $(this).toggleClass('outlined')
+    }else{
+      $('.asong').toggleClass('outlined')
+    }
+  })
+
   $('#feed').on('click',function(){
     $('.brains').add_canvas( Math.random().toString() )
   })
