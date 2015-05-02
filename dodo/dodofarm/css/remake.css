@@ -16,14 +16,15 @@
   display: inline-block;
   position: relative;
   width: 1.2em;
-  background-color: #444d6c;
+  background-color: #4d5171;
   margin: .1em;
 }
+
 .outlined {
-  /*outline-style: inset;*/
-  outline-style: dashed;
-  outline-offset: .05em;
-  outline-color: #b31403;
+  outline-style: solid;
+  outline-width: thin;
+  outline-color: #dee1f7;
+  box-shadow: 0 0 .5em #4195fc;
 }
 .ui-effects-transfer { border: 2px solid #e3e773; }
 
