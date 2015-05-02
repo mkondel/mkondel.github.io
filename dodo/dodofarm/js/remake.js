@@ -20,17 +20,25 @@ $( document ).ready(function() {
   })
 
   $('#save').on('click', function(){
-    $('.asong').effect("transfer",{ to: $("#learn") }, 500);
+    $('.asong').effect("transfer",{ to: $("#learn") });
   })
 
   $('#feed').on('click', function(){
     $('.brains').add_canvas( Math.random().toString() )
+    var last_canvas = $('#canvas'+($('canvas').length-1))
+    last_canvas.hide()
+    last_canvas.fadeIn()
+    $(this).effect("transfer",{ to: last_canvas });
   })
 
   $('#learn').on('click', function(){
     for(var i=0; i<32; i++){
       $('.brains').add_canvas( Math.random().toString() )
+      var last_canvas = $('#canvas'+($('canvas').length-1))
+      last_canvas.hide()
+      last_canvas.fadeIn()
     }
+    $(this).effect("transfer",{ to: $(".brains") });
   })
 
 // console.log(c.toDataURL('image/png'))

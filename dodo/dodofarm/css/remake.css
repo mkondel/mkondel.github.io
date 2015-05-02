@@ -17,7 +17,6 @@
   position: relative;
   width: 1.2em;
   background-color: #444d6c;
-  /*color: #e3e773;*/
   margin: .1em;
 }
 .outlined {
@@ -26,7 +25,7 @@
   outline-offset: .05em;
   outline-color: #b31403;
 }
-.ui-effects-transfer { border: 2px solid black; }
+.ui-effects-transfer { border: 2px solid #e3e773; }
 
 .pane {
   width: 30%;
