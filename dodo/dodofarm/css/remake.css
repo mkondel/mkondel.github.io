@@ -8,11 +8,12 @@
 .main {
   text-align: center;
   background-color: #1e284a;
-  color: #e3f3cf;
+  /*color: #e3f3cf;*/
+  color: #ffffff;
 }
 
 .asong {
-  font-size: 10em;
+  font-size: 8em;
   display: inline-block;
   position: relative;
   width: 1.2em;
@@ -23,24 +24,36 @@
 .outlined {
   outline-style: solid;
   outline-width: thin;
-  outline-color: #dee1f7;
   box-shadow: 0 0 .5em #4195fc;
 }
-.ui-effects-transfer { border: 2px solid #e3e773; }
 
-.pane {
-  width: 30%;
+.ui-effects-transfer { border: thin solid #ffffff; }
+
+.threepanes {
   position: relative;
+  border: dashed;
+  display: inline-block;
+  left: 0%;
+}
+.pane {
+  border: solid;
+  width: 30%;
+  /*margin: 1 em;*/
+  position: relative;
+  float: left;
 }
 .pane label{
   font-style: italic;
 }
+.songs {
+  /*float: left;*/
+}
 .controls {
-  left: 10%;
-  float: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35%;
 }
 .brains {
-  right: 10%;
   float: right;
 }
 .butt {

@@ -17,19 +17,32 @@ $( document ).ready(function() {
     }else{
       $('.asong').toggleClass('outlined')
     }
-  })
+  }).click()
 
-  $('#save').on('click', function(){
-    $('.asong').effect("transfer",{ to: $("#learn") });
-  })
-
-  $('#feed').on('click', function(){
-    $('.brains').add_canvas( Math.random().toString() )
+  var saving_action = function( opts ){
+    opts.data.to.add_canvas( Math.random().toString() )
     var last_canvas = $('#canvas'+($('canvas').length-1))
     last_canvas.hide()
     last_canvas.fadeIn()
-    $(this).effect("transfer",{ to: last_canvas });
-  })
+    opts.data.from.effect("transfer",{ to: last_canvas })
+  }
+
+  $('#save').on('click', 
+    {from: $('.asong'), to: $('.songs')}, saving_action)
+
+
+  $('#feed').on('click', 
+    {from: $('.outlined'), to: $('.songs')}, saving_action)
+
+  // $('#feed').on('click', function(){
+  //   $('.songs').add_canvas( Math.random().toString() )
+  //   var last_canvas = $('#canvas'+($('canvas').length-1))
+  //   last_canvas.hide()
+  //   last_canvas.fadeIn()
+  //   // $('.outlined').effect("transfer",{ to: $(".songs") });
+  //   $('.outlined').effect("transfer",{ to: last_canvas });
+  // })
+
 
   $('#learn').on('click', function(){
     for(var i=0; i<32; i++){
