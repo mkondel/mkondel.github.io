@@ -1,9 +1,10 @@
-.container:after {
-  content:"";
-  display:table;
-  clear:both;
-}
+.container:after {content:"";display:table;clear:both;}
 .stats {  display: none;  }
+.ui-effects-transfer { border: thin solid #ffffff; }
+.pane label{font-style: italic;}
+.songs {float: left;}
+.brains {float: right;}
+.butt {margin: .3em;}
 
 .main {
   text-align: center;
@@ -27,7 +28,6 @@
   box-shadow: 0 0 .5em #4195fc;
 }
 
-.ui-effects-transfer { border: thin solid #ffffff; }
 
 .threepanes {
   display: inline-block;
@@ -39,20 +39,31 @@
   position: relative;
   float: left;
 }
-.pane label{
-  font-style: italic;
-}
 .controls {
   margin-left: auto;
   margin-right: auto;
   width: 33%;
 }
-.songs {
-  float: left;
+
+.new_song {
+  width: 1.2em;
+  margin: 0.1em;
+  font-size: 2em;
+  outline-width: thin;
+  outline-style: solid;
+  display: inline-block;
+  background-color: #4d5171;
+  box-shadow: 0 0 .5em #4195fc;
 }
-.brains {
-  float: right;
-}
-.butt {
-  margin: .3em;
-}
+
+
+
+
+
+
+
+
+
+
+
+

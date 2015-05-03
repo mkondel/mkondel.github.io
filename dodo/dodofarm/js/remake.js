@@ -1,13 +1,22 @@
 $( document ).ready(function() {
 
   var saving_action = function( opts ){
-    opts.data.to.add_canvas( Math.random().toString() )
-    var last_canvas = $('#canvas'+($('canvas').length-1))
-    last_canvas.hide()
-    // opts.data.from.effect("transfer",{ to: last_canvas }, 200, function(){
-    opts.data.from.effect("transfer",{ to: opts.data.to }, 200, function(){
-      last_canvas.fadeIn()
+    var new_element = $('.outlined.asong').clone()
+    opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
+      new_element
+        .removeClass('outlined asong')
+        .attr('id', $('#new_song'+$('.new_song').length))
+        .addClass('new_song')
+        .appendTo(opts.data.to)
+        .fadeIn()
     })
+  }
+
+  var learning_action = function( opts ){
+    opts.data.to.add_canvas( Math.random().toString() )
+    var new_canvas = $('#canvas'+($('canvas').length-1))
+    new_canvas.hide().appendTo(opts.data.to).fadeIn()
+    opts.data.from.effect("transfer",{ to: new_canvas }, 300)
   }
 
   var storage_namespace = 'dodo'
@@ -31,7 +40,7 @@ $( document ).ready(function() {
 
   $('#A').click()
   $('#save').on('click', {from: $('.asong'), to: $('.songs')}, saving_action)
-  $('#learn').on('click', {from: $('.asong'), to: $('.brains')}, saving_action)
+  $('#learn').on('click', {from: $('.asong'), to: $('.brains')}, learning_action)
 
 
 // console.log(c.toDataURL('image/png'))
