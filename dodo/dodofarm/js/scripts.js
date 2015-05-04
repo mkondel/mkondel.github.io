@@ -32,6 +32,7 @@ $.when(
     })
 ).done(function(){
 
+  console.log('whatthe fuck 1')
 
     $.cachedScript( 'js/remake.js' )
 
