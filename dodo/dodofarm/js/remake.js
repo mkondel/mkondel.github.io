@@ -1,17 +1,13 @@
 //---------------------------------------------------------------
 // console.log(c.toDataURL('image/png'))
 //---------------------------------------------------------------
-console.log('whatthe fuck 2')
-
 $( document ).ready(function() {
-
-  console.log('whatthe fuck 3')
   var storage_namespace = 'dodo'
-  ,   ns=$.initNamespaceStorage(storage_namespace)
+  ,   ns=$.initNamespaceStorage(storage_namespace).localStorage
 
-  if( ns.localStorage.isEmpty() ){
-    ns.localStorage.set('saved',{})
-    ns.localStorage.set('brains',{})
+  if( ns.isEmpty() ){
+    ns.set('saved',{})
+    ns.set('brains',{})
   }
 
   function saving_action( opts ){
@@ -59,16 +55,28 @@ $( document ).ready(function() {
   }
 
   function open_brain(brain_hash){
-    return NN
+    retrun ns.get('brain')[brain_hash]  // return NN
+  }
+  function load_song(song_hash){
+    retrun ns.get('saved')[song_hash]
   }
   function pickle_brain(brain){
+    //turn NN into JSON
+
+    //hash on JSON to get brain_hash
+
+    //store in dodo.brains[brain_hash] = JSON_representation_of_NN
+
     return brain_hash
   }
   function save_song(song){
+    //turn song into storable sample = {input:, output:}
+
+    //get a hash of the sample
+
+    //store in dodo.saved[song_hash] = song
+
     return song_hash
-  }
-  function load_song(song_hash){
-    return song
   }
 
   $('.asong').on('click', AB)
