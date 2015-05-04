@@ -3,19 +3,24 @@
 //---------------------------------------------------------------
 $( document ).ready(function() {
   var storage_namespace = 'dodo'
-  ,   ns=$.initNamespaceStorage(storage_namespace).localStorage
+  ,   dodo=$.initNamespaceStorage(storage_namespace).localStorage
 
-  if( ns.isEmpty() ){
-    ns.set('saved',{})
-    ns.set('brains',{})
+  if( dodo.isEmpty() ){
+    dodo.set('songs',{})
+    dodo.set('brains',{})
   }
 
   function saving_action( opts ){
     var new_element = $('.outlined.asong').clone()
     opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
+
+      var song = {a: $('#A').attr('song'), b: $('#B').attr('song'), choice: [1,0]}
+      var song_hash = save_song( song )
+
       new_element
         .removeClass('outlined asong')
         .attr('id', $('#new_song'+$('.new_song').length))
+        .attr('title', song_hash)
         .addClass('new_song')
         .appendTo(opts.data.to)
         .fadeIn()
@@ -29,19 +34,39 @@ $( document ).ready(function() {
       .fadeIn()
     opts.data.from.effect("transfer",{ to: new_canvas }, 300, $('.new_song').remove())
   }
-  function evolving_action(){
-    console.log('//do the evolution')
-    // if( have brain ){
-    //   use brain in evolution of songs
-    // }else{
-    //   var one = new_random_song()
-    //   ,   two = new_random_song()
-    // }
+  function new_random_song(){
+    return Math.floor(Math.random()*11)
+  }
+  function hash_it(m){
+    return CryptoJS.SHA3( m, { outputLength: 64 } )
+  }
+  function actual_evolution( good_song, bad_song ){
+    var brain = open_brain('b_prime')
+    console.log('brain')
+    if( brain ){
+      console.log('actual_evolution: found a brain, evolving...')
+    }else{
+      console.log('actual_evolution: no brains, learn at least once to evolve')
+    }
 
-    console.log('//rate ONE vs TWO using last used brain')
-    // var rated = A_vs_B(one, two)
-    // $('#A').attr('foobar', rated['A'])
-    // $('#B').attr('foobar', rated['B'])
+    return [ hash_it(good_song.toString()), hash_it(bad_song.toString()) ]
+  }
+  function evolving_action(){
+    var new_evolution = [null, null]
+    ,   last_song = load_song('s_prime')
+    console.log('alst_song= '+JSON.stringify(last_song))
+
+    if( typeof last_song != 'undefined' ){
+      console.log('//do the evolution here...')
+      var new_evolution = actual_evolution( last_song.input.join(''), new_random_song() )
+    }else{
+      new_evolution = [new_random_song(), new_random_song()]
+      console.log('both random '+new_evolution)
+    }
+
+    $('#A').attr('song', new_evolution[0])
+    $('#B').attr('song', new_evolution[1])
+    console.log('//rate ONE vs TWO using last used brain', new_evolution[0], new_evolution[1])
 
     //reset the song selector back to 'A' after evoloving new A/B
     if( $('#B').hasClass('outlined') ){ $('#A').click() }
@@ -54,11 +79,22 @@ $( document ).ready(function() {
     }
   }
 
-  function open_brain(brain_hash){
-    retrun ns.get('brain')[brain_hash]  // return NN
-  }
   function load_song(song_hash){
-    retrun ns.get('saved')[song_hash]
+    return dodo.get('songs')[song_hash]
+  }
+  function save_song(song){
+    //turn song into storable sample = {input:, output:}
+    var songs = dodo.get('songs')
+    var sample = {input: [song.a, song.b], output: song.choice}
+    var song_hash = hash_it(sample.input.join(''))
+    songs[song_hash] = sample
+    songs['s_prime'] = sample
+    dodo.set('songs', songs)
+
+    return song_hash
+  }
+  function open_brain(brain_hash){
+    return dodo.get('brains')[brain_hash]  // return NN
   }
   function pickle_brain(brain){
     //turn NN into JSON
@@ -69,18 +105,10 @@ $( document ).ready(function() {
 
     return brain_hash
   }
-  function save_song(song){
-    //turn song into storable sample = {input:, output:}
 
-    //get a hash of the sample
-
-    //store in dodo.saved[song_hash] = song
-
-    return song_hash
-  }
-
+  console.log('start')
   $('.asong').on('click', AB)
-  // evolving_action()
+  evolving_action()
   $('#A').click()
   $('#evolve').on('click', evolving_action)
   $('#save').on('click', {from: $('.asong'), to: $('.songs')}, saving_action)
