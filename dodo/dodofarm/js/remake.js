@@ -14,6 +14,7 @@ $( document ).ready(function() {
     var new_element = $('.outlined.asong').clone()
     opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
 
+      //TODO: set and toggle with actual 'choice'
       var song = {a: $('#A').attr('song'), b: $('#B').attr('song'), choice: [1,0]}
       var song_hash = save_song( song )
 
@@ -71,7 +72,7 @@ $( document ).ready(function() {
     //reset the song selector back to 'A' after evoloving new A/B
     if( $('#B').hasClass('outlined') ){ $('#A').click() }
   }
-  function AB(){
+  function toggle_AB(){
     if( !$('.asong').hasClass('outlined') ){
       $(this).toggleClass('outlined')
     }else{
@@ -83,7 +84,7 @@ $( document ).ready(function() {
     return dodo.get('songs')[song_hash]
   }
   function save_song(song){
-    //turn song into storable sample = {input:, output:}
+    //turn song into stortoggle_able sample = {input:, output:}
     var songs = dodo.get('songs')
     var sample = {input: [song.a, song.b], output: song.choice}
     var song_hash = hash_it(sample.input.join(''))
@@ -106,13 +107,13 @@ $( document ).ready(function() {
     return brain_hash
   }
 
-  console.log('start')
-  $('.asong').on('click', AB)
-  evolving_action()
-  $('#A').click()
-  $('#evolve').on('click', evolving_action)
-  $('#save').on('click', {from: $('.asong'), to: $('.songs')}, saving_action)
-  $('#learn').on('click', {from: $('.songs'), to: $('.brains')}, learning_action)
+  console.log('start')                  //starto!
+  $('.asong').on('click', toggle_AB)    //when either of these is clicked on, outlined highlight and 'choice' should flip [1,0] -> [0,1]
+  evolving_action()                     //this provides working A/B on any load of the page
+  $('#A').click()                       //this just makes A selected and hightlighted with the outline on load
+  $('#evolve').on('click', evolving_action)                                       //if A > B, try to evolve (A' > A), or at least (A > A') > B
+  $('#save').on('click', {from: $('.asong'), to: $('.songs')}, saving_action)     //saves {A,B,choice} to 'dodo.saved'
+  $('#learn').on('click', {from: $('.songs'), to: $('.brains')}, learning_action) //take away all saved songs, find a new brain that fits all these samples
 
 })
 
