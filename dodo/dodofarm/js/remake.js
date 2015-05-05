@@ -11,29 +11,25 @@ $( document ).ready(function() {
   }
 
   //TODO: prolly goes in the WebWorker
+  function open_brain(brain_hash){ return dodo.get('brains')[brain_hash] } // return NN
+
+  //TODO: turn into perfect input for NN in WebWorker?
+  //TODO: make WebWorker.NN_as_JSON()
+
   //TODO: WebWorker reloads training set from same dodo.saved
   //TODO:    any new saves automatically picked up and used in training NN
-  function open_brain(brain_hash){
-    return dodo.get('brains')[brain_hash]  // return NN
+
+  function pickle_brain(brain_json){
+    var brain_hash = hash_it(brain_json)
+    ,   brains = dodo.get('brains')
+    brains[brain_hash] = brain_json
+    brains['b_prime'] = brain_json
+    dodo.set('brains', brains)
+    return brain_hash
   }
-  function pickle_brain(brain){
-    //turn NN into JSON
-
-    //hash on JSON to get brain_hash
-
-    //store in dodo.brains[brain_hash] = JSON_representation_of_NN
-
-    // return brain_hash
-    return Math.random().toString()
-  }
-
   function learning_action( opts ){
     $.when(
-
-      //TODO: take curr brain from WebWorker.NN.toJSON() -> dodo.brains
-
-      pickle_brain('JSON_brain_from_webworker')
-
+      pickle_brain(WebWorker.NN_as_JSON())
     ).done(function(data){
       opts.data.to.add_canvas( data )
       var new_canvas = $('#canvas'+($('canvas').length-1))
@@ -44,9 +40,6 @@ $( document ).ready(function() {
     })
   }
   function save_song(song){
-
-    //TODO: turn into perfect input for NN here, or do that in future WebWorker?
-
     var songs = dodo.get('songs')
     var sample = {input: [song.input], output: song.choice}
     var song_hash = hash_it(sample.input.join(''))
@@ -55,13 +48,17 @@ $( document ).ready(function() {
     dodo.set('songs', songs)
     return song_hash
   }
+  function current_choice(){
+    if( $('#A').hasClass('outlined') ){
+      return [1,0]
+    }else{
+      return [0,1]
+    }
+  }
   function saving_action( opts ){
     var new_element = $('.outlined.asong').clone()
     opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
-
-      //TODO: set and toggle with actual 'choice'
-      var song = {input: [$('#A').attr('song'), $('#B').attr('song')], choice: [1,0]}
-
+      var song = {input: [$('#A').attr('song'), $('#B').attr('song')], choice: current_choice()}
       new_element
         .removeClass('outlined asong')
         .attr('id', $('#new_song'+$('.new_song').length))
@@ -71,18 +68,15 @@ $( document ).ready(function() {
         .fadeIn()
     })
   }
-  function new_random_song(){
-    return Math.floor(Math.random()*11)
-  }
   function hash_it(m){
     return CryptoJS.SHA3( m, { outputLength: 64 } )
   }
   function actual_evolution( good_song, bad_song ){
     console.log('//TODO: here we talk to WebWorker (already running with NN that can rank good/bad songs)')
 
-    //TODO: some answer from WebWorker.compare_and_find_better(good_song, bad_song)
     //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
-    var brain = {good:'good_from_brain',bad:'bad_from_brain'}
+    // {good:'good_from_brain',bad:'bad_from_brain'}
+    var brain = WebWorker.compare_and_find_better(good_song, bad_song)
 
     if( brain ){
       console.log('actual_evolution: found a brain, evolving...')
@@ -104,7 +98,7 @@ $( document ).ready(function() {
       console.log('//do the evolution here...')
       var new_evolution = actual_evolution( last_song.input[0], last_song.input[1] )
     }else{
-      new_evolution = [new_random_song(), new_random_song()]
+      new_evolution = [WebWorker.new_pleasant_song(), WebWorker.new_pleasant_song()]
       console.log('both random '+new_evolution)
     }
     $('#A').attr('song', new_evolution[0])
