@@ -10,23 +10,7 @@ $( document ).ready(function() {
     dodo.set('brains',{})
   }
 
-  function saving_action( opts ){
-    var new_element = $('.outlined.asong').clone()
-    opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
 
-      //TODO: set and toggle with actual 'choice'
-      var song = {a: $('#A').attr('song'), b: $('#B').attr('song'), choice: [1,0]}
-      var song_hash = save_song( song )
-
-      new_element
-        .removeClass('outlined asong')
-        .attr('id', $('#new_song'+$('.new_song').length))
-        .attr('title', song_hash)
-        .addClass('new_song')
-        .appendTo(opts.data.to)
-        .fadeIn()
-    })
-  }
   function learning_action( opts ){
     opts.data.to.add_canvas( Math.random().toString() )
     var new_canvas = $('#canvas'+($('canvas').length-1))
@@ -35,11 +19,50 @@ $( document ).ready(function() {
       .fadeIn()
     opts.data.from.effect("transfer",{ to: new_canvas }, 300, $('.new_song').remove())
   }
+  function pickle_brain(brain){
+    //turn NN into JSON
+
+    //hash on JSON to get brain_hash
+
+    //store in dodo.brains[brain_hash] = JSON_representation_of_NN
+
+    return brain_hash
+  }
+
+  function save_song(song){
+    //turn song into stortoggle_able sample = {input:, output:}
+    var songs = dodo.get('songs')
+    var sample = {input: [song.a, song.b], output: song.choice}
+    var song_hash = hash_it(sample.input.join(''))
+    songs[song_hash] = sample
+    songs['s_prime'] = sample
+    dodo.set('songs', songs)
+    return song_hash
+  }
+  function saving_action( opts ){
+    var new_element = $('.outlined.asong').clone()
+    opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
+
+      //TODO: set and toggle with actual 'choice'
+      var song = {a: $('#A').attr('song'), b: $('#B').attr('song'), choice: [1,0]}
+
+      new_element
+        .removeClass('outlined asong')
+        .attr('id', $('#new_song'+$('.new_song').length))
+        .attr('title', save_song(song) )
+        .addClass('new_song')
+        .appendTo(opts.data.to)
+        .fadeIn()
+    })
+  }
   function new_random_song(){
     return Math.floor(Math.random()*11)
   }
   function hash_it(m){
     return CryptoJS.SHA3( m, { outputLength: 64 } )
+  }
+  function open_brain(brain_hash){
+    return dodo.get('brains')[brain_hash]  // return NN
   }
   function actual_evolution( good_song, bad_song ){
     var brain = open_brain('b_prime')
@@ -51,6 +74,9 @@ $( document ).ready(function() {
     }
 
     return [ hash_it(good_song.toString()), hash_it(bad_song.toString()) ]
+  }
+  function load_song(song_hash){
+    return dodo.get('songs')[song_hash]
   }
   function evolving_action(){
     var new_evolution = [null, null]
@@ -79,34 +105,6 @@ $( document ).ready(function() {
       $('.asong').toggleClass('outlined')
     }
   }
-
-  function load_song(song_hash){
-    return dodo.get('songs')[song_hash]
-  }
-  function save_song(song){
-    //turn song into stortoggle_able sample = {input:, output:}
-    var songs = dodo.get('songs')
-    var sample = {input: [song.a, song.b], output: song.choice}
-    var song_hash = hash_it(sample.input.join(''))
-    songs[song_hash] = sample
-    songs['s_prime'] = sample
-    dodo.set('songs', songs)
-
-    return song_hash
-  }
-  function open_brain(brain_hash){
-    return dodo.get('brains')[brain_hash]  // return NN
-  }
-  function pickle_brain(brain){
-    //turn NN into JSON
-
-    //hash on JSON to get brain_hash
-
-    //store in dodo.brains[brain_hash] = JSON_representation_of_NN
-
-    return brain_hash
-  }
-
   console.log('start')                  //starto!
   $('.asong').on('click', toggle_AB)    //when either of these is clicked on, outlined highlight and 'choice' should flip [1,0] -> [0,1]
   evolving_action()                     //this provides working A/B on any load of the page
