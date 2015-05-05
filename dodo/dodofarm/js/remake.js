@@ -10,7 +10,12 @@ $( document ).ready(function() {
     dodo.set('brains',{})
   }
 
-
+  //TODO: prolly goes in the WebWorker
+  //TODO: WebWorker reloads training set from same dodo.saved
+  //TODO:    any new saves automatically picked up and used in training NN
+  function open_brain(brain_hash){
+    return dodo.get('brains')[brain_hash]  // return NN
+  }
   function pickle_brain(brain){
     //turn NN into JSON
 
@@ -24,7 +29,9 @@ $( document ).ready(function() {
 
   function learning_action( opts ){
     $.when(
-      //TODO: take curr brain from WebWorker and save as JSON in dodo.brains
+
+      //TODO: take curr brain from WebWorker.NN.toJSON() -> dodo.brains
+
       pickle_brain('JSON_brain_from_webworker')
 
     ).done(function(data){
@@ -37,9 +44,9 @@ $( document ).ready(function() {
     })
   }
   function save_song(song){
+
     //TODO: turn into perfect input for NN here, or do that in future WebWorker?
-    //TODO: WebWorker reloads training set from same dodo.saved
-    //TODO:    any new saves automatically picked up and used in training NN
+
     var songs = dodo.get('songs')
     var sample = {input: [song.input], output: song.choice}
     var song_hash = hash_it(sample.input.join(''))
@@ -70,19 +77,20 @@ $( document ).ready(function() {
   function hash_it(m){
     return CryptoJS.SHA3( m, { outputLength: 64 } )
   }
-  function open_brain(brain_hash){
-    return dodo.get('brains')[brain_hash]  // return NN
-  }
   function actual_evolution( good_song, bad_song ){
-    var brain = open_brain('b_prime')
-    console.log('brain')
+    console.log('//TODO: here we talk to WebWorker (already running with NN that can rank good/bad songs)')
+
+    //TODO: some answer from WebWorker.compare_and_find_better(good_song, bad_song)
+    //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
+    var brain = {good:'good_from_brain',bad:'bad_from_brain'}
+
     if( brain ){
       console.log('actual_evolution: found a brain, evolving...')
     }else{
       console.log('actual_evolution: no brains, learn at least once to evolve')
     }
 
-    return [ hash_it(good_song.toString()), hash_it(bad_song.toString()) ]
+    return [ brain.good, brain.bad ]
   }
   function load_song(song_hash){
     return dodo.get('songs')[song_hash]
@@ -90,39 +98,57 @@ $( document ).ready(function() {
   function evolving_action(){
     var new_evolution = [null, null]
     ,   last_song = load_song('s_prime')
-    console.log('alst_song= '+JSON.stringify(last_song))
+    console.log('last_song= '+JSON.stringify(last_song))
 
     if( typeof last_song != 'undefined' ){
       console.log('//do the evolution here...')
-      var new_evolution = actual_evolution( last_song.input.join(''), new_random_song() )
+      var new_evolution = actual_evolution( last_song.input[0], last_song.input[1] )
     }else{
       new_evolution = [new_random_song(), new_random_song()]
       console.log('both random '+new_evolution)
     }
-
     $('#A').attr('song', new_evolution[0])
     $('#B').attr('song', new_evolution[1])
-    console.log('//rate ONE vs TWO using last used brain', new_evolution[0], new_evolution[1])
 
     //reset the song selector back to 'A' after evoloving new A/B
     if( $('#B').hasClass('outlined') ){ $('#A').click() }
   }
   function toggle_AB(){
+
+    //TODO: outlined highlight and 'choice' should flip [1,0] -> [0,1]
+
     if( !$('.asong').hasClass('outlined') ){
       $(this).toggleClass('outlined')
     }else{
       $('.asong').toggleClass('outlined')
     }
   }
+
+//---------------------------------------------------------------
   console.log('start')                  //starto!
-  $('.asong').on('click', toggle_AB)    //when either of these is clicked on, outlined highlight and 'choice' should flip [1,0] -> [0,1]
+
   evolving_action()                     //this provides working A/B on any load of the page
+
+  $('.asong').on('click', toggle_AB)    //when either of these is clicked on
   $('#A').click()                       //this just makes A selected and hightlighted with the outline on load
-  $('#evolve').on('click', evolving_action)                                       //if A > B, try to evolve (A' > A), or at least (A > A') > B
-  $('#save').on('click', {from: $('.asong'), to: $('.songs')}, saving_action)     //saves {A,B,choice} to 'dodo.saved'
-  $('#learn').on('click', {from: $('.songs'), to: $('.brains')}, learning_action) //find a new brain that fits all curr dodo.saved songs
+
+  $('#evolve')
+    .on('click',
+      evolving_action)     //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
+
+  $('#save')
+    .on('click',
+      {from: $('.asong'), to: $('.songs')},
+      saving_action)     //saves {A,B,choice} to 'dodo.saved'
+
+  $('#learn')
+    .on('click',
+      {from: $('.songs'), to: $('.brains')},
+      learning_action) //retains curr brain, it fits all curr dodo.saved songs 'as is' at curr time
 
 })
+
+
 
 
 
