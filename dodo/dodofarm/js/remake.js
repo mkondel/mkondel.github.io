@@ -11,14 +11,6 @@ $( document ).ready(function() {
   }
 
 
-  function learning_action( opts ){
-    opts.data.to.add_canvas( Math.random().toString() )
-    var new_canvas = $('#canvas'+($('canvas').length-1))
-    new_canvas.hide()
-      .appendTo(opts.data.to)
-      .fadeIn()
-    opts.data.from.effect("transfer",{ to: new_canvas }, 300, $('.new_song').remove())
-  }
   function pickle_brain(brain){
     //turn NN into JSON
 
@@ -26,13 +18,30 @@ $( document ).ready(function() {
 
     //store in dodo.brains[brain_hash] = JSON_representation_of_NN
 
-    return brain_hash
+    // return brain_hash
+    return Math.random().toString()
   }
 
+  function learning_action( opts ){
+    $.when(
+      //TODO: take curr brain from WebWorker and save as JSON in dodo.brains
+      pickle_brain('JSON_brain_from_webworker')
+
+    ).done(function(data){
+      opts.data.to.add_canvas( data )
+      var new_canvas = $('#canvas'+($('canvas').length-1))
+      new_canvas.hide()
+        .appendTo(opts.data.to)
+        .fadeIn()
+      opts.data.from.effect("transfer",{ to: new_canvas }, 300)
+    })
+  }
   function save_song(song){
-    //turn song into stortoggle_able sample = {input:, output:}
+    //TODO: turn into perfect input for NN here, or do that in future WebWorker?
+    //TODO: WebWorker reloads training set from same dodo.saved
+    //TODO:    any new saves automatically picked up and used in training NN
     var songs = dodo.get('songs')
-    var sample = {input: [song.a, song.b], output: song.choice}
+    var sample = {input: [song.input], output: song.choice}
     var song_hash = hash_it(sample.input.join(''))
     songs[song_hash] = sample
     songs['s_prime'] = sample
@@ -44,7 +53,7 @@ $( document ).ready(function() {
     opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
 
       //TODO: set and toggle with actual 'choice'
-      var song = {a: $('#A').attr('song'), b: $('#B').attr('song'), choice: [1,0]}
+      var song = {input: [$('#A').attr('song'), $('#B').attr('song')], choice: [1,0]}
 
       new_element
         .removeClass('outlined asong')
@@ -111,7 +120,7 @@ $( document ).ready(function() {
   $('#A').click()                       //this just makes A selected and hightlighted with the outline on load
   $('#evolve').on('click', evolving_action)                                       //if A > B, try to evolve (A' > A), or at least (A > A') > B
   $('#save').on('click', {from: $('.asong'), to: $('.songs')}, saving_action)     //saves {A,B,choice} to 'dodo.saved'
-  $('#learn').on('click', {from: $('.songs'), to: $('.brains')}, learning_action) //take away all saved songs, find a new brain that fits all these samples
+  $('#learn').on('click', {from: $('.songs'), to: $('.brains')}, learning_action) //find a new brain that fits all curr dodo.saved songs
 
 })
 
