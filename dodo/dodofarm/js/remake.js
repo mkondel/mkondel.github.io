@@ -4,6 +4,7 @@
 $( document ).ready(function() {
   var storage_namespace = 'dodo'
   ,   dodo=$.initNamespaceStorage(storage_namespace).localStorage
+  ,   worker = new Worker('js/brain_worker.js');
 
   if( dodo.isEmpty() ){
     dodo.set('songs',{})
@@ -13,6 +14,30 @@ $( document ).ready(function() {
   //TODO: prolly goes in the WebWorker
   function open_brain(brain_hash){ return dodo.get('brains')[brain_hash] } // return NN
 
+  function handle_worker_cb(data){
+
+    switch (data.cmd) {
+      case 'learning_action':
+        learning_action(data.payload)
+        break
+      default:
+        console.log('reply from web worked: '+JSON.stringify(data))
+        break
+      }
+
+    function learning_action( opts ){
+      $.when(
+        pickle_brain(opts.json_brain)
+      ).done(function(brain_hash){
+        opts.data.to.add_canvas( brain_hash )
+        var new_canvas = $('#canvas'+($('canvas').length-1))
+        new_canvas.hide()
+          .appendTo(opts.data.to)
+          .fadeIn()
+        opts.data.from.effect("transfer",{ to: new_canvas }, 300)
+      })
+    }
+  }
   //TODO: turn into perfect input for NN in WebWorker?
   //TODO: make WebWorker.NN_as_JSON()
 
@@ -27,18 +52,7 @@ $( document ).ready(function() {
     dodo.set('brains', brains)
     return brain_hash
   }
-  function learning_action( opts ){
-    $.when(
-      pickle_brain(WebWorker.NN_as_JSON())
-    ).done(function(data){
-      opts.data.to.add_canvas( data )
-      var new_canvas = $('#canvas'+($('canvas').length-1))
-      new_canvas.hide()
-        .appendTo(opts.data.to)
-        .fadeIn()
-      opts.data.from.effect("transfer",{ to: new_canvas }, 300)
-    })
-  }
+
   function save_song(song){
     var songs = dodo.get('songs')
     var sample = {input: [song.input], output: song.choice}
@@ -56,6 +70,9 @@ $( document ).ready(function() {
     }
   }
   function saving_action( opts ){
+
+    // worker.postMessage({cmd:'stop'}); // Send data to our worker.
+
     var new_element = $('.outlined.asong').clone()
     opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
       var song = {input: [$('#A').attr('song'), $('#B').attr('song')], choice: current_choice()}
@@ -71,21 +88,7 @@ $( document ).ready(function() {
   function hash_it(m){
     return CryptoJS.SHA3( m, { outputLength: 64 } )
   }
-  function actual_evolution( good_song, bad_song ){
-    console.log('//TODO: here we talk to WebWorker (already running with NN that can rank good/bad songs)')
 
-    //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
-    // {good:'good_from_brain',bad:'bad_from_brain'}
-    var brain = WebWorker.compare_and_find_better(good_song, bad_song)
-
-    if( brain ){
-      console.log('actual_evolution: found a brain, evolving...')
-    }else{
-      console.log('actual_evolution: no brains, learn at least once to evolve')
-    }
-
-    return [ brain.good, brain.bad ]
-  }
   function load_song(song_hash){
     return dodo.get('songs')[song_hash]
   }
@@ -95,12 +98,17 @@ $( document ).ready(function() {
     console.log('last_song= '+JSON.stringify(last_song))
 
     if( typeof last_song != 'undefined' ){
-      console.log('//do the evolution here...')
-      var new_evolution = actual_evolution( last_song.input[0], last_song.input[1] )
+      console.log('//do the evolution here...'+JSON.stringify(last_song))
+      worker.postMessage({cmd:'compare_and_find_better', payload:[ last_song.input[0], last_song.input[1] ]}); // Send data to our worker.
+      // var new_evolution = actual_evolution( last_song.input[0], last_song.input[1] )
     }else{
-      new_evolution = [WebWorker.new_pleasant_song(), WebWorker.new_pleasant_song()]
+      // new_evolution = [WebWorker.new_pleasant_song(), WebWorker.new_pleasant_song()]
+      new_evolution = ['WebWorker.new_pleasant_song(1)', 'WebWorker.new_pleasant_song(2)']
       console.log('both random '+new_evolution)
     }
+  }
+  function evolution_results(e){
+    var new_evolution = e.data
     $('#A').attr('song', new_evolution[0])
     $('#B').attr('song', new_evolution[1])
 
@@ -121,7 +129,9 @@ $( document ).ready(function() {
 //---------------------------------------------------------------
   console.log('start')                  //starto!
 
-  evolving_action()                     //this provides working A/B on any load of the page
+  worker.addEventListener('message', handle_worker_cb, false)
+
+  // evolving_action()                     //this provides working A/B on any load of the page
 
   $('.asong').on('click', toggle_AB)    //when either of these is clicked on
   $('#A').click()                       //this just makes A selected and hightlighted with the outline on load
@@ -136,9 +146,14 @@ $( document ).ready(function() {
       saving_action)     //saves {A,B,choice} to 'dodo.saved'
 
   $('#learn')
-    .on('click',
-      {from: $('.songs'), to: $('.brains')},
-      learning_action) //retains curr brain, it fits all curr dodo.saved songs 'as is' at curr time
+    .on('click',function(){
+      worker.postMessage({cmd:'learn', payload: {from: '.songs', to: '.brains'}})
+    })
+
+
+      // {from: $('.songs'), to: $('.brains')},
+      // learning_action) //retains curr brain, it fits all curr dodo.saved songs 'as is' at curr time
+
 
 })
 
