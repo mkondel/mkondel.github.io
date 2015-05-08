@@ -5,8 +5,8 @@ var counter = 0
 onmessage = function(e) {
   var data = e.data
   switch (data.cmd) {
-    case 'compare_and_find_better':
-      postMessage({cmd: 'foobar', payload: data.payload})
+    case 'evolve':
+      postMessage({cmd: 'evolutioning', payload: data.payload})
       break
     case 'learn':
       postMessage({cmd: 'learned', payload: data.payload})

@@ -14,10 +14,14 @@ $( document ).ready(function() {
   //TODO: prolly goes in the WebWorker
   function open_brain(brain_hash){ return dodo.get('brains')[brain_hash] } // return NN
 
-  function handle_worker_cb(data){
+  function handle_worker_cb(e){
+    var data = e.data
 
     switch (data.cmd) {
-      case 'learning_action':
+      case 'evolutioning':
+        evolving_action(data.payload)
+        break
+      case 'learned':
         learning_action(data.payload)
         break
       default:
@@ -26,6 +30,7 @@ $( document ).ready(function() {
       }
 
     function learning_action( opts ){
+      alert(JSON.stringify(opts))
       $.when(
         pickle_brain(opts.json_brain)
       ).done(function(brain_hash){
@@ -53,6 +58,13 @@ $( document ).ready(function() {
     return brain_hash
   }
 
+  function current_choice(){
+    if( $('#A').hasClass('outlined') ){
+      return [1,0]
+    }else{
+      return [0,1]
+    }
+  }
   function save_song(song){
     var songs = dodo.get('songs')
     var sample = {input: [song.input], output: song.choice}
@@ -62,17 +74,7 @@ $( document ).ready(function() {
     dodo.set('songs', songs)
     return song_hash
   }
-  function current_choice(){
-    if( $('#A').hasClass('outlined') ){
-      return [1,0]
-    }else{
-      return [0,1]
-    }
-  }
   function saving_action( opts ){
-
-    // worker.postMessage({cmd:'stop'}); // Send data to our worker.
-
     var new_element = $('.outlined.asong').clone()
     opts.data.from.effect("transfer",{ to: opts.data.to }, 300, function(){
       var song = {input: [$('#A').attr('song'), $('#B').attr('song')], choice: current_choice()}
@@ -128,31 +130,35 @@ $( document ).ready(function() {
 
 //---------------------------------------------------------------
   console.log('start')                  //starto!
-
   worker.addEventListener('message', handle_worker_cb, false)
 
-  // evolving_action()                     //this provides working A/B on any load of the page
 
+  // evolving_action()                     //this provides working A/B on any load of the page
   $('.asong').on('click', toggle_AB)    //when either of these is clicked on
   $('#A').click()                       //this just makes A selected and hightlighted with the outline on load
 
+
+      // evolving_action)     //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
   $('#evolve')
     .on('click',
-      evolving_action)     //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
+      function(){
+        worker.postMessage({cmd:'evolve', payload: 'stuff'})
+      })
+
 
   $('#save')
     .on('click',
       {from: $('.asong'), to: $('.songs')},
       saving_action)     //saves {A,B,choice} to 'dodo.saved'
 
-  $('#learn')
-    .on('click',function(){
-      worker.postMessage({cmd:'learn', payload: {from: '.songs', to: '.brains'}})
-    })
-
 
       // {from: $('.songs'), to: $('.brains')},
       // learning_action) //retains curr brain, it fits all curr dodo.saved songs 'as is' at curr time
+  $('#learn')
+    .on('click',
+      function(){
+        worker.postMessage({cmd:'learn', payload: {from: '.songs', to: '.brains'}})
+      })
 
 
 })
