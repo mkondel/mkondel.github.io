@@ -113,22 +113,23 @@ $( document ).ready(function() {
   //this just makes A selected and hightlighted with the outline on load
   $('#A').click()
 
-  $('#evolve')
-    .on('click',
-      function(){
-        worker.postMessage({cmd:'evolve', payload: load_song('s_prime')})
-      })
+  //saves {A,B,choice} to 'dodo.saved'
+  $('#save').on('click',
+      {from: $('.asong'), to: $('.songs')}, saving_action)
 
-  $('#save')
-    .on('click',
-      {from: $('.asong'), to: $('.songs')},
-      saving_action)     //saves {A,B,choice} to 'dodo.saved'
-
-  $('#learn')
-    .on('click',
+  $('#evolve').on('click',
       function(){
-        worker.postMessage({cmd:'learn', payload: {from: '.songs', to: '.brains'}})
-      })
+        worker.postMessage({
+          cmd:'evolve', 
+          payload: load_song('s_prime')
+        })})
+
+  $('#learn').on('click',
+      function(){
+        worker.postMessage({
+          cmd:'learn', 
+          payload: {from: '.songs', to: '.brains'}
+        })})
 
 })
 
