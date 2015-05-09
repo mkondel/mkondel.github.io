@@ -12,8 +12,6 @@ $( document ).ready(function() {
 //---------------------------------------------------------------
   function handle_worker_cb(e){
     var data = e.data
-    console.log(JSON.stringify(data))
-
     switch (data.cmd) {
       case 'evolutioning':
         evolution_results(data.payload)
@@ -29,7 +27,8 @@ $( document ).ready(function() {
   function evolution_results(new_evolution){
     $('#A').attr('song', new_evolution[0])
     $('#B').attr('song', new_evolution[1])
-    if( $('#B').hasClass('outlined') ){ $('#A').click() }   //reset the song selector back to 'A' after evoloving new A/B
+    //reset the song selector back to 'A' after evoloving new A/B
+    if( $('#B').hasClass('outlined') ){ $('#A').click() }
   }
   function learning_results( data ){
     $(data.to).add_canvas(
@@ -105,11 +104,15 @@ $( document ).ready(function() {
   console.log('start')                  //starto!
   worker.addEventListener('message', handle_worker_cb, false)
 
-  // evolving_action()                     //this provides working A/B on any load of the page
-  $('.asong').on('click', toggle_AB)    //when either of these is clicked on
-  $('#A').click()                       //this just makes A selected and hightlighted with the outline on load
+  //this provides working A/B on any load of the page
+  // evolving_action()
 
-      // evolving_action)     //suppose (A > B), try to evolve (A' > A), or at least (A > A') > B
+  //when either of these is clicked on
+  $('.asong').on('click', toggle_AB)
+
+  //this just makes A selected and hightlighted with the outline on load
+  $('#A').click()
+
   $('#evolve')
     .on('click',
       function(){
@@ -121,13 +124,11 @@ $( document ).ready(function() {
       {from: $('.asong'), to: $('.songs')},
       saving_action)     //saves {A,B,choice} to 'dodo.saved'
 
-      // learning_action) //retains curr brain, it fits all curr dodo.saved songs 'as is' at curr time
   $('#learn')
     .on('click',
       function(){
         worker.postMessage({cmd:'learn', payload: {from: '.songs', to: '.brains'}})
       })
-
 
 })
 
