@@ -19,7 +19,7 @@ $( document ).ready(function() {
 
     switch (data.cmd) {
       case 'evolutioning':
-        evolving_action(data.payload)
+        evolution_results(data.payload)
         break
       case 'learned':
         learning_action(data.payload)
@@ -109,8 +109,7 @@ $( document ).ready(function() {
       console.log('both random '+new_evolution)
     }
   }
-  function evolution_results(e){
-    var new_evolution = e.data
+  function evolution_results(new_evolution){
     $('#A').attr('song', new_evolution[0])
     $('#B').attr('song', new_evolution[1])
 

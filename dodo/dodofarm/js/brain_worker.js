@@ -6,7 +6,7 @@ onmessage = function(e) {
   var data = e.data
   switch (data.cmd) {
     case 'evolve':
-      postMessage({cmd: 'evolutioning', payload: data.payload})
+      postMessage({cmd: 'evolutioning', payload: ['WebWorker.reply_song1', 'WebWorker.reply_song2']})
       break
     case 'learn':
       postMessage({cmd: 'learned', payload: data.payload})
