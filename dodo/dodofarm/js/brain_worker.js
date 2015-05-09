@@ -7,18 +7,12 @@ onmessage = function(e) {
   switch (data.cmd) {
     case 'evolve':
       postMessage({cmd: 'evolutioning', payload: evolving_action( data.payload )})
-      // postMessage({cmd: 'evolutioning', payload: data.payload })
       break
     case 'learn':
-      data.payload[ 'curr_brain' ] = curr_brain
+      data.payload.curr_brain = curr_brain
       postMessage({cmd: 'learned', payload: data.payload})
       break
 }}
-
-
-function hash_it(m){
-  return CryptoJS.SHA3( m, { outputLength: 64 } )
-}
 
 function evolving_action(last_song){
   if( typeof last_song != 'undefined' ){
