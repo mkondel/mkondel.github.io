@@ -22,7 +22,23 @@ function evolving_action(last_song){
   }
 }
 
-  //TODO: WebWorker reloads training set from same dodo.saved
-  //TODO:    any new saves automatically picked up and used in training NN
+//LEARN:   re-train curr_brain, start using the new_curr_brain
+// training of brains has iteration, error, learning factor limits
+//
+// training always over whole SAVED set
+// if curr_brain == null, init ortho-random NN, train with the 1 SAVED input so far
+// if curr_brain exists, use it as the 'init', and still train over all of SAVED
+
+//EVOLVE:  _evolve_(A,B), using curr_brain to rate individuals during selection
+// _evolve_(A,B) has population, generation, error limits
+//
+// _evolve_(A,B) notes according to some rules
+// these rules can be evolved next...
+// this might be a way to find 'good sounding fractals' for song generation
+
+
+
+
+
 
 
