@@ -31,14 +31,9 @@ $( document ).ready(function() {
     if( $('#B').hasClass('outlined') ){ $('#A').click() }
   }
   function learning_results( data ){
-    $(data.to).add_canvas(
-      pickle_brain(
-        data.curr_brain
-      ))
+    $(data.to).add_canvas(  pickle_brain( data.curr_brain )  )
     var new_canvas = $('#canvas'+($('canvas').length-1))
-    new_canvas.hide()
-      .appendTo($(data.to))
-      .fadeIn()
+    new_canvas.hide().appendTo($(data.to)).fadeIn()
     $(data.from).effect("transfer",{ to: new_canvas }, 300)
   }
 
@@ -51,8 +46,6 @@ $( document ).ready(function() {
   function pickle_brain(brain_json){
     var brain_hash = hash_it(JSON.stringify(brain_json))
     ,   brains = dodo.get('brains')
-
-    console.log(brain_hash)
     brains[brain_hash] = brain_json
     brains['b_prime'] = brain_json
     dodo.set('brains', brains)
@@ -75,8 +68,8 @@ $( document ).ready(function() {
   }
   function save_song(song){
     var songs = dodo.get('songs')
-    var sample = {input: song.input, output: song.choice}
-    var song_hash = hash_it(sample.input.join(''))
+    ,   sample = {input: song.input, output: song.choice}
+    ,   song_hash = hash_it(sample.input.join(''))
     songs[song_hash] = sample
     songs['s_prime'] = sample
     dodo.set('songs', songs)
