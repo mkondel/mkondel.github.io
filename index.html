@@ -32,8 +32,7 @@
 $( document ).ready(function() {
 
   $([['http://mkondel.github.io/Alienstalker/alien.html'],['http://mkondel.github.io/dodo/dodofarm/index.html']])
-  .each(function(){
-    var link = this[1]
+  .each(function(link){
     $('#link').attr('href',link)
     $('#links').addClass('rounded')
     $('#links').on('click',function(){ window.location = link })
