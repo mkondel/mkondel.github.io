@@ -25,15 +25,19 @@
 </head>
 <body>
 <!-- <div id="links" class="rounded"><a id="linktododofarm" href="http://mkondel.github.io/dodo/dodofarm/index.html">Dodo Farm</a></div> -->
-<div id="links" class="rounded"><a id="linktododofarm" href="http://mkondel.github.io/Alienstalker/alien.html">Dodo Farm</a></div>
+<!-- <div id="links" class="rounded"><a id="linktoalien" href="http://mkondel.github.io/Alienstalker/alien.html">Alienstalker</a></div> -->
 </body>
 
 <script>
 $( document ).ready(function() {
-  var dodofarmlink = 'http://mkondel.github.io/Alienstalker/alien.html'
-  $('#link').attr('href',dodofarmlink)
-  $('#links').addClass('rounded')
-  $('#links').on('click',function(){ window.location = dodofarmlink })
+
+  $([['http://mkondel.github.io/Alienstalker/alien.html'],['http://mkondel.github.io/dodo/dodofarm/index.html']])
+  .each(function(){
+    var link = this[1]
+    $('#link').attr('href',link)
+    $('#links').addClass('rounded')
+    $('#links').on('click',function(){ window.location = link })
+  })
 })
 //testing testing 123
 </script>
