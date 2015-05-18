@@ -115,7 +115,8 @@ $( document ).ready(function() {
         worker.postMessage({
           cmd:'evolve', 
           payload: load_song('s_prime')
-        })})
+        })
+      })
 
   $('#learn').on('click',
       function(){

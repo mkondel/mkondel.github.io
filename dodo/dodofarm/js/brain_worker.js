@@ -12,7 +12,8 @@ onmessage = function(e) {
       data.payload.curr_brain = curr_brain
       postMessage({cmd: 'learned', payload: data.payload})
       break
-}}
+}
+}
 
 function evolving_action(last_song){
   if( typeof last_song != 'undefined' ){
