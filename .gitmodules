@@ -1,3 +1,6 @@
 [submodule "Alienstalker"]
 	path = Alienstalker
 	url = https://github.com/mkondel/Alienstalker.git
+[submodule "SpaceToilet"]
+	path = SpaceToilet
+	url = https://github.com/mkondel/SpaceToilet.git
