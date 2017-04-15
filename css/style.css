@@ -509,7 +509,7 @@ button {
   /* use to push the .content-wrapper below the intro project image */
   content: '';
   display: block;
-  height: 100%;
+  height: 80%;
   width: 100%;
   pointer-events: none;
 }
@@ -554,7 +554,7 @@ button {
   /* scroll down arrow */
   position: fixed;
   z-index: 1;
-  top: calc(100% - 100px);
+  top: calc(100% - 300px);
   left: 50%;
   right: auto;
   -webkit-transform: translateX(-50%);
