@@ -16,16 +16,16 @@
     <header>
         <a href="#0" class="cd-logo"><img src="img/runlevel_logo.png"></a>
         
-        <!-- <button class="cd-nav-trigger">Menu<span aria-hidden="true" class="cd-icon"></span></button> -->
+        <button class="cd-nav-trigger">Menu<span aria-hidden="true" class="cd-icon"></span></button>
     </header>
 
     <nav class="cd-primary-nav">
         <ul>
-            <li class="cd-label">Navigation</li>
-            <li><a href="#0">The team</a></li>
-            <li><a href="#0">Our services</a></li>
-            <li><a href="#0">Our projects</a></li>
-            <li><a href="#0">Contact us</a></li>
+            <li class="cd-label">Max Kondel</li>
+            <li><a href="https://s3.amazonaws.com/maxkondel/runlevel/max_kondel_resume.pdf">Online resume</a></li>
+            <li><a href="#0">My services</a></li>
+            <li><a href="https://github.com/mkondel">Github</a></li>
+            <li><a href="https://www.linkedin.com/in/max-kondel-08302a1/">Linkedin</a></li>
         </ul>
     </nav>
      <!-- .cd-primary-nav -->
@@ -43,13 +43,11 @@
     $( document ).ready(function() {
         var spaceToiletText = `<h1>SpaceToilet</h1><p>A game made with the Unity3D engine. <a href="http://mkondel.github.io/SpaceToilet/website/index.html">Download for Win/Mac/Linux/Android/iOS, or play in your browser.</a></p>`
         var alienstalkerText = `<h1>Alienstalker</h1><p>An unfinished game is made using Phaser.js, an engine for browser games. <a href="http://mkondel.github.io/Alienstalker/alien.html">Play in your browser.</a></p>`
-        var runlevelText = `<h1>Runlevel</h1><p>The company that I started in 2014.  <a href="http://runlevel.us">runlevel.us</a></p>`
-        var githubText = `<h1>Github</h1><p><a href="https://github.com/mkondel">github.com/mkondel</a></p>`
-        var linkedinText = `<h1>Linkedin</h1><p><a href="https://www.linkedin.com/in/max-kondel-08302a1/">linkedin.com/mkondel</a></p>`
+        var runlevelText = `<h1>Runlevel</h1><p>The company that I started in 2014.  The main site is currently just a langing page: <a href="http://runlevel.us">runlevel.us</a></p>`
 
         var eCommerceText = `<h1>TheARKreations</h1><p>An eCommerce platform.  Uses cloud storage for product images.  Node.js and Express, running on Nginx.  Data storage is Elasticsearch.  Hosted on an Amazon AWS micro instance. <a href="http://www.thearkreations.com">thearkreations.com</a></p>`
         var gamesText = `${alienstalkerText} ${spaceToiletText}`
-        var contactText = `${runlevelText} ${githubText} ${linkedinText}`
+        var contactText = `${runlevelText}`
 
         var singleProjectTemplate = doT.template(`
             <li class="single-project">
@@ -68,7 +66,7 @@
         
         $([ {name:'eCommerce', url:'http://www.thearkreations.com', text:eCommerceText},
             {name:'Games', url:'http://mkondel.github.io/SpaceToilet/website/index.html', text:gamesText},
-            {name:'Contact', url:'http://mkondel.github.io/Alienstalker/alien.html', text:contactText},
+            {name:'Business', url:'http://mkondel.github.io/Alienstalker/alien.html', text:contactText},
             // {name:'Runlevel', url:'http://runlevel.us', text:runlevelText},
             // {name:'Github', url:'https://github.com/mkondel', text:githubText},
         ]).each(function(i,project){

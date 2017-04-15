@@ -44,8 +44,8 @@ button {
 }
 
 .cd-logo {
-  top: 4%;
-  right: 5%;
+  top: 25px;
+  left: 5%;
   -webkit-transition: opacity 0.3s, visibility 0.3s;
   -moz-transition: opacity 0.3s, visibility 0.3s;
   transition: opacity 0.3s, visibility 0.3s;
