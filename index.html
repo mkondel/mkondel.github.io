@@ -1,40 +1,80 @@
-<html><head>
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-  .rounded {
-    text-align: center;
-    font-size: 2em;
-    position: relative;
-    left: 45%;
-    top: 30%;
-    border: .3em solid green;
-    border-radius: 1.5em;
-    width: 10%;
-  }
+    <link href='https://fonts.googleapis.com/css?family=Playfair+Display:700italic,700' rel='stylesheet' type='text/css'>
 
-  a:hover, a:visited, a:link, a:active{
-    text-decoration: none;
-  }
-
-</style>
-
-<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-<title>Dodo Index</title>
+    <link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <script src="js/modernizr.js"></script> <!-- Modernizr -->
+    
+    <title>Project Portfolio</title>
 </head>
 <body>
-  <div id="links"/>
+    <header>
+        <a href="#0" class="cd-logo"><img src="img/runlevel_logo.png"></a>
+        
+        <!-- <button class="cd-nav-trigger">Menu<span aria-hidden="true" class="cd-icon"></span></button> -->
+    </header>
+
+    <nav class="cd-primary-nav">
+        <ul>
+            <li class="cd-label">Navigation</li>
+            <li><a href="#0">The team</a></li>
+            <li><a href="#0">Our services</a></li>
+            <li><a href="#0">Our projects</a></li>
+            <li><a href="#0">Contact us</a></li>
+        </ul>
+    </nav>
+     <!-- .cd-primary-nav -->
+    
+    <div class="cd-projects-container">
+        <ul id='projects'>
+        </ul>
+    </div> <!-- .cd-projects-container -->
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/main.js"></script> <!-- Resource jQuery -->
 </body>
 
-<script>
-$( document ).ready(function() {
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.0/doT.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+        var spaceToiletText = `<h1>SpaceToilet</h1><p>A game made with the Unity3D engine. <a href="http://mkondel.github.io/SpaceToilet/website/index.html">Download for Win/Mac/Linux/Android/iOS, or play in your browser.</a></p>`
+        var alienstalkerText = `<h1>Alienstalker</h1><p>An unfinished game is made using Phaser.js, an engine for browser games. <a href="http://mkondel.github.io/Alienstalker/alien.html">Play in your browser.</a></p>`
+        var runlevelText = `<h1>Runlevel</h1><p>The company that I started in 2014.  <a href="http://runlevel.us">runlevel.us</a></p>`
+        var githubText = `<h1>Github</h1><p><a href="https://github.com/mkondel">github.com/mkondel</a></p>`
+        var linkedinText = `<h1>Linkedin</h1><p><a href="https://www.linkedin.com/in/max-kondel-08302a1/">linkedin.com/mkondel</a></p>`
 
-  $([['toilet','http://mkondel.github.io/SpaceToilet/website/index.html'],['alien','http://mkondel.github.io/Alienstalker/alien.html'],['dodo','http://mkondel.github.io/dodo/dodofarm/index.html']])
-  .each(function(i,link){
-    $('#links').append($('<div>').addClass('rounded').append($('<a>').attr('href', link[1]).text(link[0])))
-    // $('#links').on('click',function(){ window.location = link })
-  })
-})
-//testing testing 123
-</script>
+        var eCommerceText = `<h1>TheARKreations</h1><p>An eCommerce platform.  Uses cloud storage for product images.  Node.js and Express, running on Nginx.  Data storage is Elasticsearch.  Hosted on an Amazon AWS micro instance. <a href="http://www.thearkreations.com">thearkreations.com</a></p>`
+        var gamesText = `${alienstalkerText} ${spaceToiletText}`
+        var contactText = `${runlevelText} ${githubText} ${linkedinText}`
+
+        var singleProjectTemplate = doT.template(`
+            <li class="single-project">
+                <div class="cd-title">
+                    <h2>{{=it.name}}</h2>
+                </div> <!-- .cd-title -->
+
+                <div class="cd-project-info">
+                    <button class="cd-scroll">Scroll down</button>
+                    
+                    <div class="content-wrapper">
+                        {{=it.text}}
+                    </div>
+                </div> <!-- .cd-project-info -->
+            </li>`)
+        
+        $([ {name:'eCommerce', url:'http://www.thearkreations.com', text:eCommerceText},
+            {name:'Games', url:'http://mkondel.github.io/SpaceToilet/website/index.html', text:gamesText},
+            {name:'Contact', url:'http://mkondel.github.io/Alienstalker/alien.html', text:contactText},
+            // {name:'Runlevel', url:'http://runlevel.us', text:runlevelText},
+            // {name:'Github', url:'https://github.com/mkondel', text:githubText},
+        ]).each(function(i,project){
+            $('#projects').append(singleProjectTemplate(project))
+        })
+    })
+    </script>
 
 </html>
