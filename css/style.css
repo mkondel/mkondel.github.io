@@ -554,7 +554,7 @@ button {
   /* scroll down arrow */
   position: fixed;
   z-index: 1;
-  top: calc(100% - 300px);
+  top: calc(100% - 250px);
   left: 50%;
   right: auto;
   -webkit-transform: translateX(-50%);
