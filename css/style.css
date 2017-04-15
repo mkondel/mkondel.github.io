@@ -729,3 +729,8 @@ button {
 .no-js .cd-project-info .content-wrapper {
   margin-top: 0;
 }
+
+.hiden {
+  visibility: hidden;
+  display: none;
+}

@@ -23,17 +23,22 @@
     <nav class="cd-primary-nav">
         <ul>
             <li class="cd-label">Max Kondel</li>
-            <li><a href="https://s3.amazonaws.com/maxkondel/runlevel/max_kondel_resume.pdf">Online resume</a></li>
             <!-- <li><a href="#0">My services</a></li> -->
             <li><a href="https://www.linkedin.com/in/max-kondel-08302a1/">Linkedin</a></li>
+            <li><a href="https://s3.amazonaws.com/maxkondel/runlevel/max_kondel_resume.pdf">Resume</a></li>
             <li><a href="https://github.com/mkondel">Github</a></li>
         </ul>
     </nav>
-     <!-- .cd-primary-nav -->
+    <!-- .cd-primary-nav -->
     
+    <div class="hiden">
+        <div id="TheARKreations"><h1><a href="http://www.thearkreations.com">thearkreations.com</a></h1><p>An eCommerce platform.  Uses cloud storage for product images.  Node.js and Express, running on Nginx.  Data storage is Elasticsearch.  Hosted on an Amazon AWS micro instance.</p></div>
+        <div id="Alienstalker"><h1><a href="http://mkondel.github.io/Alienstalker/alien.html">Alienstalker</a></h1><p>A game made with the Phaser.js engine. Play directly in your browser.</p></div>
+        <div id="SpaceToilet"><h1><a href="http://mkondel.github.io/SpaceToilet/website/index.html">SpaceToilet</a></h1><p>A game made with the Unity3D engine. Download for Win/Mac/Linux/Android/iOS, or play in your browser.</p></div>
+        <div id="Runlevel"><h1><a href="http://runlevel.us">runlevel.us</a></h1><p>Software consulting company that I started in 2014.</p></div>
+    </div>
     <div class="cd-projects-container">
-        <ul id='projects'>
-        </ul>
+        <ul id='projects'/>
     </div> <!-- .cd-projects-container -->
 <script src="js/jquery-2.1.4.js"></script>
 <script src="js/main.js"></script> <!-- Resource jQuery -->
@@ -42,11 +47,11 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.0/doT.min.js"></script>
     <script>
     $( document ).ready(function() {
-        var spaceToiletText = `<h1>SpaceToilet</h1><p>A game made with the Unity3D engine. <a href="http://mkondel.github.io/SpaceToilet/website/index.html">Download for Win/Mac/Linux/Android/iOS, or play in your browser.</a></p>`
-        var alienstalkerText = `<h1>Alienstalker</h1><p>An unfinished game is made using Phaser.js, an engine for browser games. <a href="http://mkondel.github.io/Alienstalker/alien.html">Play in your browser.</a></p>`
-        var runlevelText = `<h1>Runlevel</h1><p>The company that I started in 2014.  The main site is currently just a langing page: <a href="http://runlevel.us">runlevel.us</a></p>`
-
-        var eCommerceText = `<h1>TheARKreations</h1><p>An eCommerce platform.  Uses cloud storage for product images.  Node.js and Express, running on Nginx.  Data storage is Elasticsearch.  Hosted on an Amazon AWS micro instance. <a href="http://www.thearkreations.com">thearkreations.com</a></p>`
+        var spaceToiletText = $('#SpaceToilet').html()
+        var alienstalkerText = $('#Alienstalker').html()
+        var runlevelText = $('#Runlevel').html()
+        var arkText = $('#TheARKreations').html()
+        var eCommerceText = `${arkText}`
         var gamesText = `${alienstalkerText} ${spaceToiletText}`
         var contactText = `${runlevelText}`
 
