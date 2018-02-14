@@ -318,8 +318,8 @@ button {
   -o-transform: translateY(66.6666666667%);
   transform: translateY(66.6666666667%);
 }
-.cd-projects-container .single-project.selected {
   /* selected project */
+.cd-projects-container .single-project.selected {
   cursor: auto;
   -webkit-transform: translateY(0);
   -moz-transform: translateY(0);
@@ -327,8 +327,8 @@ button {
   -o-transform: translateY(0);
   transform: translateY(0);
 }
-.cd-projects-container .single-project.selected ~ li {
   /* hide siblings projects */
+.cd-projects-container .single-project.selected ~ li {
   -webkit-transform: translateY(100%);
   -moz-transform: translateY(100%);
   -ms-transform: translateY(100%);
