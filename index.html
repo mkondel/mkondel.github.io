@@ -36,7 +36,8 @@
         <div id="Alienstalker"><h1><a href="http://mkondel.github.io/Alienstalker/alien.html">Alienstalker</a></h1><p>A game made with the Phaser.js engine. Play directly in your browser.</p></div>
         <div id="SpaceToilet"><h1><a href="http://mkondel.github.io/SpaceToilet/website/index.html">SpaceToilet</a></h1><p>A game made with the Unity3D engine. Download for Win/Mac/Linux/Android/iOS, or play in your browser.</p></div>
         <div id="Runlevel"><h1><a href="http://runlevel.us">runlevel.us</a></h1><p>Software consulting company that I started. I provide eCommerce solutions using the <a href="http://runlevel.us">Runlevel</a> platform. It is built with React on the frontend, React Router, Node.js, Express, Nginx and Postgres. Uses RDS and S3 for database and storage. Can easily be hosted on an EC2 micro instance.</p></div>
-        <div id="Gdax"><h1><a href="http://gdax.maxkondel.com">Coinbase</a></h1><p>Stock charts for crypto coins with live updates. Watch price changes for the four coins traded on the <a href="https://gdax.com/trade">GDAX</a> exchange by <a href="https://www.coinbase.com">Coinbase</a>. Uses custom trend indicators, has zoomable and dragable charts and axes, shows Heikin Ashi and classic candlesticks on multiple time scales and calculates risk/reward with a simple click interface.</p></div>
+        <div id="Gdax"><h1><a href="http://gdaxtrader.s3-website-us-east-1.amazonaws.com/">Coinbase</a></h1><p>Stock charts for crypto coins with live updates. Watch price changes for the four coins traded on the <a href="https://gdax.com/trade">GDAX</a> exchange by <a href="https://www.coinbase.com">Coinbase</a>. Uses custom trend indicators, has zoomable and dragable charts and axes, shows Heikin Ashi and classic candlesticks on multiple time scales and calculates risk/reward with a simple click interface.</p></div>
+        <div id="ScalperMan"><h1><a href="http://scalperman.s3-website-us-east-1.amazonaws.com/">Scalper Man</a></h1><p>Useful for daytrading scalping strategies. Helps you find the perfect entry and exit price for BTCUSD on <a href="https://gdax.com/trade">GDAX</a>. Displays 4 live charts: 5min, 15min, 6hr and 1day. Has volume profile on the left axis, standard RSI and MACD under each chart, as well as the standard Bollinger bands.</p></div>
     </div>
     <div class="cd-projects-container">
         <ul id='projects'/>
@@ -52,10 +53,11 @@
         var alienstalkerText = $('#Alienstalker').html()
         var runlevelText = $('#Runlevel').html()
         var gdaxText = $('#Gdax').html()
+        var scalpermanText = $('#ScalperMan').html()
         var arkText = $('#TheARKreations').html()
         var eCommerceText = `${arkText}`
         var gamesText = `${alienstalkerText} ${spaceToiletText}`
-        var contactText = `${runlevelText} ${gdaxText}`
+        var contactText = `${runlevelText} ${gdaxText} ${scalpermanText}`
 
         var singleProjectTemplate = doT.template(`
             <li class="single-project">
