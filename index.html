@@ -34,7 +34,8 @@
     
     <div class="hiden">
         <div id="TheARKreations"><h1><a href="http://www.thearkreations.com">TheARKreations</a></h1><p>An online store using the <a href="http://runlevel.us">Runlevel eCommerce platform</a>. This includes SSL encryption, payment systems, order history, item search and many others. Uses cloud storage for product images. </p></div>
-        <div id="Alienstalker"><h1><a href="http://mkondel.github.io/Alienstalker/alien.html">Alienstalker</a></h1><p>A game made with the Phaser.js engine. Play directly in your browser.</p></div>
+        <div id="SlotMachine"><h1><a href="https://slotmachine.maxkondel.com/">Slotmachine</a></h1><p>A classic casino game made with the Pixi engine.</p></div>
+        <div id="Alienstalker"><h1><a href="http://mkondel.github.io/Alienstalker/alien.html">Alienstalker</a></h1><p>A game made with the Phaser.js engine.</p></div>
         <div id="SpaceToilet"><h1><a href="http://mkondel.github.io/SpaceToilet/website/index.html">SpaceToilet</a></h1><p>A game made with the Unity3D engine. Download for Win/Mac/Linux/Android/iOS, or play in your browser.</p></div>
         <div id="Runlevel"><h1><a href="http://runlevel.us">runlevel.us</a></h1><p>Software consulting company that I started. I provide eCommerce solutions using the <a href="http://runlevel.us">Runlevel</a> platform. It is built with React on the frontend, React Router, Node.js, Express, Nginx and Postgres. Uses RDS and S3 for database and storage. Can easily be hosted on an EC2 micro instance.</p></div>
         <div id="Gdax"><h1><a href="http://gdaxtrader.s3-website-us-east-1.amazonaws.com/">Coinbase</a></h1><p>Stock charts for crypto coins with live updates. Watch price changes for the four coins traded on the <a href="https://gdax.com/trade">GDAX</a> exchange by <a href="https://www.coinbase.com">Coinbase</a>. Uses custom trend indicators, has zoomable and dragable charts and axes, shows Heikin Ashi and classic candlesticks on multiple time scales and calculates risk/reward with a simple click interface.</p></div>
@@ -50,6 +51,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.0/doT.min.js"></script>
     <script>
     $( document ).ready(function() {
+        var slotmachineText = $('#SlotMachine').html()
         var spaceToiletText = $('#SpaceToilet').html()
         var alienstalkerText = $('#Alienstalker').html()
         var runlevelText = $('#Runlevel').html()
@@ -57,7 +59,7 @@
         var scalpermanText = $('#ScalperMan').html()
         var arkText = $('#TheARKreations').html()
         var eCommerceText = `${arkText}`
-        var gamesText = `${alienstalkerText} ${spaceToiletText}`
+        var gamesText = `${alienstalkerText} ${spaceToiletText} ${slotmachineText}`
         var contactText = `${runlevelText} ${gdaxText} ${scalpermanText}`
 
         var singleProjectTemplate = doT.template(`
